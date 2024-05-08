@@ -10,6 +10,7 @@ import 'package:technomade/src/core/utils/snackbar_util.dart';
 import 'package:technomade/src/feature/app/bloc/app_bloc.dart';
 import 'package:technomade/src/feature/app/presentation/base.dart';
 import 'package:technomade/src/feature/app/widgets/custom_loading_widget.dart';
+import 'package:technomade/src/feature/auth/presentation/ui/onboarding_page.dart';
 
 // ignore: unused_element
 const _tag = 'Launcher';
@@ -75,11 +76,7 @@ class _LauncherState extends State<Launcher> with WidgetsBindingObserver {
             child: CustomLoadingWidget(),
           ),
           inAppState: () => const Base(),
-          orElse: () => const _Scaffold(
-            child: CustomLoadingWidget(
-              isError: true,
-            ),
-          ),
+          orElse: () => const OnboardingPage(),
         );
       },
     ); // OnBoardingPage();

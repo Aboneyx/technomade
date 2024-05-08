@@ -26,7 +26,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     ///
     /// New code
     ///
-    emit(const AppState.inAppState());
+    emit(const AppState.notAuthorizedState());
   }
 
   Future<void> _refreshLocal(

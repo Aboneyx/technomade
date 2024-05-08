@@ -38,11 +38,12 @@ class MyApp extends StatelessWidget {
         child: MaterialApp.router(
           routeInformationParser: parser,
           routerDelegate: routerDelegate,
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: AppColors.mainColor),
-            brightness: Brightness.light,
-            useMaterial3: true,
-          ),
+          theme: AppTheme.light,
+          // ThemeData(
+          //   colorScheme: ColorScheme.fromSeed(seedColor: AppColors.mainColor),
+          //   brightness: Brightness.light,
+          //   useMaterial3: true,
+          // ),
           themeMode: ThemeMode.light,
           builder: (context, child) => MediaQuery.withClampedTextScaling(
             minScaleFactor: 1,

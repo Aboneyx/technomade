@@ -19,6 +19,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.5
+  flutter_svg: ^2.0.10+1
   fluttertoast: ^8.2.5
   freezed_annotation:
   get_it: ^7.7.0
@@ -27,6 +28,7 @@ dependencies:
   json_serializable: ^6.8.0
   l: ^4.0.2
   loader_overlay: ^4.0.0
+  pinput: ^4.0.0
   rxdart: ^0.27.7
   shared_preferences: ^2.2.3
   shimmer: ^3.0.0
