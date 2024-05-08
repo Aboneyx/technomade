@@ -27,7 +27,9 @@ class _CreateRouteSecondPageState extends State<CreateRouteSecondPage> {
             padding: EdgeInsets.zero,
             splashRadius: 24,
             constraints: const BoxConstraints(maxHeight: 24, maxWidth: 24),
-            onPressed: () {},
+            onPressed: () {
+              context.router.maybePop();
+            },
             icon: SvgPicture.asset(Assets.icons.arrowLeftDropCircleOutline),
           ),
         ),
