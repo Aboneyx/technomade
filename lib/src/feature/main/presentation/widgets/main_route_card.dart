@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:technomade/gen/assets.gen.dart';
+import 'package:technomade/src/core/router/app_router.dart';
 import 'package:timelines/timelines.dart';
 
 class MainRouteCard extends StatefulWidget {
@@ -21,8 +23,7 @@ class _MainRouteCardState extends State<MainRouteCard> {
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () {
-          isExpanded = !isExpanded;
-          setState(() {});
+          context.router.push(const DriverRouteDetailRoute());
         },
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -38,7 +39,16 @@ class _MainRouteCardState extends State<MainRouteCard> {
                   ),
                   RotatedBox(
                     quarterTurns: isExpanded ? 2 : 0,
-                    child: SvgPicture.asset(Assets.icons.chevronDown),
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      splashRadius: 24,
+                      constraints: const BoxConstraints(maxHeight: 24, maxWidth: 24),
+                      onPressed: () {
+                        isExpanded = !isExpanded;
+                        setState(() {});
+                      },
+                      icon: SvgPicture.asset(Assets.icons.chevronDown),
+                    ),
                   ),
                 ],
               ),

@@ -3,20 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:technomade/gen/assets.gen.dart';
 import 'package:technomade/src/core/resources/resources.dart';
+import 'package:technomade/src/core/router/app_router.dart';
 import 'package:technomade/src/feature/auth/presentation/widgets/custom_button.dart';
-import 'package:technomade/src/feature/auth/presentation/widgets/custom_text_field.dart';
-import 'package:technomade/src/feature/main/presentation/widgets/create_station_bottom_sheet.dart';
 import 'package:technomade/src/feature/main/presentation/widgets/stop_card.dart';
 
 @RoutePage()
-class CreateRouteSecondPage extends StatefulWidget {
-  const CreateRouteSecondPage({super.key});
+class DriverRouteDetailPage extends StatefulWidget {
+  const DriverRouteDetailPage({super.key});
 
   @override
-  State<CreateRouteSecondPage> createState() => _CreateRouteSecondPageState();
+  State<DriverRouteDetailPage> createState() => _DriverRouteDetailPageState();
 }
 
-class _CreateRouteSecondPageState extends State<CreateRouteSecondPage> {
+class _DriverRouteDetailPageState extends State<DriverRouteDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +34,7 @@ class _CreateRouteSecondPageState extends State<CreateRouteSecondPage> {
         ),
         leadingWidth: 48,
         title: const Text(
-          'Creating a route',
+          'Almaty - Shymkent',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
         ),
         titleSpacing: 8,
@@ -49,36 +48,12 @@ class _CreateRouteSecondPageState extends State<CreateRouteSecondPage> {
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              child: CustomTextField(
-                hintText: 'Description',
-                hintStyle: TextStyle(fontSize: 16, color: Colors.black),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
-                  borderSide: BorderSide(color: AppColors.primaryColor300),
-                ),
-                maxLines: 3,
-              ),
-            ),
-            const SizedBox(
-              height: 18,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'Rate config',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                  IconButton(
-                    padding: EdgeInsets.zero,
-                    splashRadius: 20,
-                    constraints: const BoxConstraints(maxHeight: 24, maxWidth: 24),
-                    onPressed: () {
-                      CreateStationBottomSheet.show(context);
-                    },
-                    icon: const Icon(Icons.add),
                   ),
                 ],
               ),
@@ -89,9 +64,7 @@ class _CreateRouteSecondPageState extends State<CreateRouteSecondPage> {
             Expanded(
               child: ListView.separated(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemBuilder: (context, index) => StopCard(
-                  onDeleteTap: () {},
-                ),
+                itemBuilder: (context, index) => const StopCard(),
                 separatorBuilder: (context, index) => const SizedBox(
                   height: 8,
                 ),
@@ -100,9 +73,36 @@ class _CreateRouteSecondPageState extends State<CreateRouteSecondPage> {
             ),
             Padding(
               padding: const EdgeInsets.all(16.0).copyWith(top: 8),
-              child: CustomButton(
-                text: 'Create',
-                onTap: () {},
+              child: Row(
+                children: [
+                  Expanded(
+                    child: CustomButton(
+                      height: 34,
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      bgColor: Colors.white,
+                      border: Border.all(color: AppColors.mainColor),
+                      text: 'Monitoring',
+                      textStyle: const TextStyle(color: AppColors.mainColor, fontWeight: FontWeight.w600),
+                      onTap: () {
+                        context.router.push(const MonitoringDriverRoute());
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: CustomButton(
+                      height: 34,
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      text: 'Scan',
+                      textStyle: const TextStyle(fontWeight: FontWeight.w600, color: Colors.white),
+                      onTap: () {
+                        context.router.push(const ScanTicketRoute());
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
