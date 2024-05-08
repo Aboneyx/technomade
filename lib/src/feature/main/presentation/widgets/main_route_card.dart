@@ -1,11 +1,16 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 
-class MainRouteCard extends StatelessWidget {
+class MainRouteCard extends StatefulWidget {
   const MainRouteCard({
     super.key,
   });
 
+  @override
+  State<MainRouteCard> createState() => _MainRouteCardState();
+}
+
+class _MainRouteCardState extends State<MainRouteCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
