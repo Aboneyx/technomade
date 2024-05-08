@@ -46,6 +46,7 @@ class CustomTextField extends StatelessWidget {
   final bool readOnly;
   final bool? enabled;
   final InputBorder? focusedBorder;
+  final InputBorder? border;
 
   const CustomTextField({
     super.key,
@@ -93,6 +94,7 @@ class CustomTextField extends StatelessWidget {
     this.fillColor,
     this.filled,
     this.focusedBorder,
+    this.border,
   });
 
   @override
@@ -114,6 +116,7 @@ class CustomTextField extends StatelessWidget {
         // style: textStyle ?? AppTextStyles.m14w400.copyWith(color: Colors.white),
         inputFormatters: inputFormatters,
         textAlignVertical: TextAlignVertical.center,
+        cursorColor: Colors.black,
         maxLines: maxLines,
         minLines: minLines,
         keyboardType: keyboardType,
@@ -142,7 +145,9 @@ class CustomTextField extends StatelessWidget {
           hintText: hintText,
           errorMaxLines: errorMaxLines,
           errorStyle: errorStyle,
-          focusedBorder: focusedBorder,
+          focusedBorder: focusedBorder ?? border,
+          border: border,
+          enabledBorder: border,
         ),
       ),
     );

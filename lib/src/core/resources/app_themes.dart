@@ -28,7 +28,7 @@ mixin AppTheme {
           elevation: 0,
           // systemOverlayStyle: SystemUiOverlayStyle.dark,
           backgroundColor: Colors.transparent,
-          titleTextStyle: TextStyle(color: Colors.white),
+          titleTextStyle: TextStyle(color: Colors.black),
           centerTitle: true,
         ),
         useMaterial3: false,
@@ -49,6 +49,7 @@ mixin AppTheme {
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
           fillColor: AppColors.static,
+          
           hintStyle: const TextStyle(
             fontSize: 17,
             color: AppColors.labelColorLightSecondary,
