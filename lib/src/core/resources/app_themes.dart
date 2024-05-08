@@ -31,7 +31,7 @@ mixin AppTheme {
           titleTextStyle: TextStyle(color: Colors.white),
           centerTitle: true,
         ),
-        useMaterial3: false,
+        useMaterial3: true,
         // colorSchemeSeed: AppColors.kPrimary,
         bottomSheetTheme: const BottomSheetThemeData(
           backgroundColor: AppColors.static,
