@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:technomade/src/feature/app/presentation/launcher.dart';
 import 'package:technomade/src/feature/auth/presentation/auth_presentation.dart';
+import 'package:technomade/src/feature/main/presentation/main_presentation.dart';
 
 part 'app_router.gr.dart';
 
@@ -16,8 +17,17 @@ class AppRouter extends _$AppRouter {
           page: LauncherRoute.page,
           initial: true,
         ),
+
+        ///
+        ///Auth
+        ///
         AutoRoute(page: AuthRoute.page),
         AutoRoute(page: SignUpRoute.page),
         AutoRoute(page: ConfirmationRoute.page),
+
+        ///
+        ///Main
+        ///
+        AutoRoute(page: CreateRouteSecondRoute.page),
       ];
 }

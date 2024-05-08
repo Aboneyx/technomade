@@ -11,6 +11,7 @@ import 'package:technomade/src/feature/app/bloc/app_bloc.dart';
 import 'package:technomade/src/feature/app/presentation/base.dart';
 import 'package:technomade/src/feature/app/widgets/custom_loading_widget.dart';
 import 'package:technomade/src/feature/auth/presentation/ui/onboarding_page.dart';
+import 'package:technomade/src/feature/main/presentation/main_presentation.dart';
 import 'package:technomade/src/feature/main/presentation/ui/main_driver_page.dart';
 
 // ignore: unused_element
@@ -77,7 +78,7 @@ class _LauncherState extends State<Launcher> with WidgetsBindingObserver {
             child: CustomLoadingWidget(),
           ),
           inAppState: () => const Base(),
-          orElse: () => const MainDriverPage(),
+          orElse: () => const CreateRoutePage(),
         );
       },
     ); // OnBoardingPage();
