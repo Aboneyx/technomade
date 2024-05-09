@@ -18,6 +18,16 @@ class AppRouter extends _$AppRouter {
           initial: true,
           children: [
             /// Passenger Routes
+            AutoRoute(
+              page: BaseMainPassengerTab.page,
+              children: [
+                AutoRoute(
+                  page: MainPassengerRoute.page,
+                  initial: true,
+                ),
+              ],
+            ),
+            AutoRoute(page: SearchPassengerRoute.page),
 
             /// Driver Routes
             AutoRoute(
@@ -49,7 +59,6 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: MonitoringDriverRoute.page),
         AutoRoute(page: ScanTicketRoute.page),
         AutoRoute(page: MainPassengerRoute.page),
-        AutoRoute(page: SearchPassengerRoute.page),
         AutoRoute(page: SearchPassengerResultRoute.page),
       ];
 }
@@ -57,4 +66,9 @@ class AppRouter extends _$AppRouter {
 @RoutePage(name: 'BaseMainDriverTab')
 class BaseMainDriverPage extends AutoRouter {
   const BaseMainDriverPage({super.key});
+}
+
+@RoutePage(name: 'BaseMainPassengerTab')
+class BaseMainPassengerPage extends AutoRouter {
+  const BaseMainPassengerPage({super.key});
 }
