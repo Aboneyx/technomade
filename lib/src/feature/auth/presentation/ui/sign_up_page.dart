@@ -58,7 +58,12 @@ class _SignUpPageState extends State<SignUpPage> {
             loadedState: (token) {
               context.loaderOverlay.hide();
               SnackBarUtil.showTopShortToast(context, message: token);
-              context.router.push(ConfirmationRoute(username: usernameController.text));
+              context.router.push(
+                ConfirmationRoute(
+                  username: usernameController.text,
+                  password: passwordController.text,
+                ),
+              );
             },
             orElse: () {
               context.loaderOverlay.hide();
@@ -145,7 +150,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     password: passwordController.text,
                                     firstName: firstNameController.text,
                                     lastName: lastNameController.text,
-                                    role: isDriver ? 'DRIVER' : 'PASSENGER',
+                                    role: isDriver ? 'driver' : 'passenger',
                                   );
                                 }
                               },

@@ -24,7 +24,7 @@ class ValidatorUtil {
       return 'The minimum password length is 6 symbols';
     }
 
-    if(value != repeatPassword) {
+    if(value != repeatPassword && repeatPassword != null) {
       return "Passwords don't match";
     }
 

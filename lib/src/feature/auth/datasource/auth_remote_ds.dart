@@ -32,6 +32,12 @@ abstract class IAuthRemoteDS {
   Future<Either<String, String>> resendConfirmationCode({
     required String username,
   });
+
+  Future<Either<String, UserDTO>> registrationConfirm({
+    required String username,
+    required String password,
+    required String code,
+  });
 }
 
 class AuthRemoteDSImpl with NetworkHelper implements IAuthRemoteDS {
@@ -70,9 +76,9 @@ class AuthRemoteDSImpl with NetworkHelper implements IAuthRemoteDS {
 
       return Right(user.copyWith(basicAuth: basicAuth));
     } on DioException catch (e, stackTrace) {
-      DI<Talker>().log(e.response);
-      DI<Talker>().log(e.response?.headers);
-      DI<Talker>().log(e.response?.redirects);
+      // DI<Talker>().log(e.response);
+      // DI<Talker>().log(e.response?.headers);
+      // DI<Talker>().log(e.response?.redirects);
       final parseError = pasreDioException(e);
 
       ErrorUtil.logError(
@@ -213,6 +219,56 @@ class AuthRemoteDSImpl with NetworkHelper implements IAuthRemoteDS {
       } else {
         return const Left('Token is null');
       }
+    } on DioException catch (e, stackTrace) {
+      final parseError = pasreDioException(e);
+
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: '${BackendEndpointCollection.LOGIN} => $parseError',
+      );
+
+      return Left(parseError);
+    } on Object catch (e, stackTrace) {
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: 'Object error => $e',
+      );
+
+      return Left('Object Error: $e');
+    }
+  }
+
+  @override
+  Future<Either<String, UserDTO>> registrationConfirm({
+    required String username,
+    required String password,
+    required String code,
+  }) async {
+    try {
+      final String basicAuth = 'Basic ${base64.encode(utf8.encode('$username:$password'))}';
+
+      final dioResponse = await dio.post(
+        BackendEndpointCollection.REGISTRATION_CONFIRM,
+        data: {
+          'username': username,
+          'code': code,
+        },
+        queryParameters: {
+          'username': username,
+          'code': code,
+        },
+        options: Options(
+          headers: {
+            'Authorization': basicAuth,
+          },
+        ),
+      );
+
+      final user = UserDTO.fromJson(dioResponse.data as Map<String, dynamic>);
+
+      return Right(user.copyWith(basicAuth: basicAuth));
     } on DioException catch (e, stackTrace) {
       final parseError = pasreDioException(e);
 

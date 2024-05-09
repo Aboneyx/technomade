@@ -26,6 +26,12 @@ abstract class IAuthRepository {
     required String password,
     required String role,
   });
+
+  Future<Either<String, UserDTO>> registrationConfirm({
+    required String username,
+    required String password,
+    required String code,
+  });
 }
 
 class AuthRepositoryImpl implements IAuthRepository {
@@ -79,4 +85,26 @@ class AuthRepositoryImpl implements IAuthRepository {
         password: password,
         role: role,
       );
+
+  @override
+  Future<Either<String, UserDTO>> registrationConfirm({
+    required String username,
+    required String password,
+    required String code,
+  }) async {
+    final res = await _remoteDS.registrationConfirm(
+      username: username,
+      password: password,
+      code: code,
+    );
+
+    return res.fold(
+      (l) => Left(l),
+      (r) async {
+        await _localDS.saveUserToCache(user: r);
+
+        return Right(r);
+      },
+    );
+  }
 }
