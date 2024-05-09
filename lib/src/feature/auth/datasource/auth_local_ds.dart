@@ -27,6 +27,7 @@ class AuthLocalDSImpl extends IAuthLocalDS {
   UserDTO? getUserFromCache() {
     try {
       final str = sharedPreferences.getString(USER_FROM_CACHE);
+      DI<Talker>().debug('#getUserFromCache str $str');
 
       if (str != null) {
         return UserDTO.fromJson(
@@ -53,7 +54,8 @@ class AuthLocalDSImpl extends IAuthLocalDS {
   @override
   Future<void> saveUserToCache({required UserDTO user}) async {
     try {
-      await sharedPreferences.setString(USER_FROM_CACHE, jsonEncode(user.toJson()));
+      final res = await sharedPreferences.setString(USER_FROM_CACHE, jsonEncode(user.toJson()));
+      DI<Talker>().debug('#saveUserToCache res $res');
     } catch (e) {
       DI<Talker>().error('#saveUserToCache $e');
     }

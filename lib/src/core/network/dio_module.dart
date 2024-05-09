@@ -10,6 +10,7 @@ import 'package:talker_flutter/talker_flutter.dart';
 import 'package:technomade/src/core/enum/environment.dart';
 import 'package:technomade/src/core/services/locator_service.dart';
 import 'package:technomade/src/feature/auth/datasource/auth_local_ds.dart';
+import 'package:technomade/src/feature/auth/model/user_dto.dart';
 
 class DioModule {
   final IAuthLocalDS _authLocalDS;
@@ -21,8 +22,8 @@ class DioModule {
       headers: {
         // 'accept': 'application/json',
         // 'Content-Language': 'ru', //default
-        'Cookie': 'JSESSIONID=934A109C8755D46A8EBAC82671979FBE',
-        'set-cookie': 'JSESSIONID=934A109C8755D46A8EBAC82671979FBE',
+        // 'Cookie': 'JSESSIONID=934A109C8755D46A8EBAC82671979FBE',
+        // 'set-cookie': 'JSESSIONID=934A109C8755D46A8EBAC82671979FBE',
         // 'Connection': 'keep-alive',
         // 'User-Agent': 'PostmanRuntime/7.38.0',
       },
@@ -60,13 +61,10 @@ class _AuthDioInterceptor extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    // final UserDTO? user = _authLocalDS.getUserFromCacheNull();
-    // final String locale = _authLocalDS.getLocale();
-    // if (user != null && user.token != null) {
-    //   options.headers['Authorization'] = 'Bearer ${user.token}';
-    // }
-    // options.headers['Accept'] = "application/json";
-    // options.headers['Content-Language'] = locale.replaceAll('kk', 'kz');
+    final UserDTO? user = _authLocalDS.getUserFromCache();
+    if (user != null && user.basicAuth != null) {
+      options.headers['Authorization'] = user.basicAuth;
+    }
     super.onRequest(options, handler);
   }
 

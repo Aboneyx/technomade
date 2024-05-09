@@ -38,6 +38,8 @@ class _LauncherState extends State<Launcher> with WidgetsBindingObserver {
     );
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+
+    // DI<IAuthRemoteDS>().getBasicAuthInfo(username: 'aboneyx', password: 'qwe123');
   }
 
   @override

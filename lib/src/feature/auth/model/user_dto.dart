@@ -13,6 +13,9 @@ class UserDTO with _$UserDTO {
     String? lastName,
     String? role,
     String? username,
+
+    // local fields
+    String? basicAuth,
   }) = _UserDTO;
 
   factory UserDTO.fromJson(Map<String, dynamic> json) => _$UserDTOFromJson(json);

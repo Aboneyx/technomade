@@ -34,7 +34,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   ) async {
     final UserDTO? user = _authRepository.getUserFromCache();
 
-    if (user != null) {
+    
+
+    if (user != null && user.basicAuth != null) {
       emit(AppState.inAppState(user: user));
     } else {
       emit(const AppState.notAuthorizedState());
