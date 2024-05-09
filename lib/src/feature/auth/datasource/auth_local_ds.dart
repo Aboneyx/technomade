@@ -45,7 +45,8 @@ class AuthLocalDSImpl extends IAuthLocalDS {
   @override
   Future<void> removeUserFromCache() async {
     try {
-      await sharedPreferences.remove(USER_FROM_CACHE);
+      final res = await sharedPreferences.remove(USER_FROM_CACHE);
+      DI<Talker>().debug('#removeUserFromCache res $res');
     } catch (e) {
       DI<Talker>().error('#removeUserFromCache $e');
     }

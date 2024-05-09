@@ -98,5 +98,10 @@ mixin AppTheme {
         ),
         dialogTheme: const DialogTheme(),
         // dialogBackgroundColor: AppLightColors.base50,
+        navigationBarTheme: const NavigationBarThemeData(
+          height: 70,
+          // elevation: 0.1,
+          // elevation:
+        ),
       );
 }
