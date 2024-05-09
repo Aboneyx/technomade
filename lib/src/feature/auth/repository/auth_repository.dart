@@ -8,6 +8,8 @@ abstract class IAuthRepository {
     required String username,
     required String password,
   });
+
+  UserDTO? getUserFromCache();
 }
 
 class AuthRepositoryImpl implements IAuthRepository {
@@ -39,4 +41,7 @@ class AuthRepositoryImpl implements IAuthRepository {
       },
     );
   }
+
+  @override
+  UserDTO? getUserFromCache() => _localDS.getUserFromCache();
 }

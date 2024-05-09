@@ -1,15 +1,24 @@
+// ignore: unused_import
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:technomade/src/feature/auth/model/user_dto.dart';
+import 'package:technomade/src/feature/auth/repository/auth_repository.dart';
 
 part 'app_bloc.freezed.dart';
 
+// ignore: unused_element
 const _tag = 'AppBloc';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
-  AppBloc() : super(const AppState.loadingState()) {
+  final IAuthRepository _authRepository;
+
+  AppBloc({
+    required IAuthRepository authRepository,
+  })  : _authRepository = authRepository,
+        super(const AppState.loadingState()) {
     on<AppEvent>(
       (AppEvent event, Emitter<AppState> emit) async => event.map(
         checkAuth: (_CheckAuth event) async => _checkAuth(event, emit),
@@ -23,10 +32,13 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     _CheckAuth event,
     Emitter<AppState> emit,
   ) async {
-    ///
-    /// New code
-    ///
-    emit(const AppState.notAuthorizedState());
+    final UserDTO? user = _authRepository.getUserFromCache();
+
+    if (user != null) {
+      emit(AppState.inAppState(user: user));
+    } else {
+      emit(const AppState.notAuthorizedState());
+    }
   }
 
   Future<void> _refreshLocal(
@@ -34,10 +46,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     Emitter<AppState> emit,
   ) async {
     await state.maybeWhen(
-      inAppState: () async {
+      inAppState: (user) async {
         emit(const AppState.loadingState());
         await Future.delayed(const Duration(milliseconds: 100));
-        emit(const AppState.inAppState());
+        emit(AppState.inAppState(user: user));
       },
       orElse: () async {
         emit(const AppState.loadingState());
@@ -111,7 +123,9 @@ class AppState with _$AppState {
 
   const factory AppState.notAuthorizedState() = _NotAuthorizedState;
 
-  const factory AppState.inAppState() = _InAppState;
+  const factory AppState.inAppState({
+    required UserDTO? user,
+  }) = _InAppState;
 
   const factory AppState.errorState({
     required String message,

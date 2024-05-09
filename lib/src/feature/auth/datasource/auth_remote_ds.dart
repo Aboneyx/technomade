@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:technomade/src/core/enum/environment.dart';
 import 'package:technomade/src/core/network/network_helper.dart';
+import 'package:technomade/src/core/services/locator_service.dart';
 import 'package:technomade/src/core/utils/error_util.dart';
 import 'package:technomade/src/feature/auth/model/user_dto.dart';
 
@@ -23,9 +25,19 @@ class AuthRemoteDSImpl with NetworkHelper implements IAuthRemoteDS {
     required String password,
   }) async {
     try {
+      final FormData formData = FormData.fromMap({
+        'username': username,
+        'password': password,
+      });
+
       final dioResponse = await dio.post(
         BackendEndpointCollection.LOGIN,
         data: {
+          'username': username,
+          'password': password,
+        },
+        // data: formData,
+        queryParameters: {
           'username': username,
           'password': password,
         },
@@ -35,6 +47,9 @@ class AuthRemoteDSImpl with NetworkHelper implements IAuthRemoteDS {
 
       return Right(user);
     } on DioException catch (e, stackTrace) {
+      DI<Talker>().log(e.response);
+      DI<Talker>().log(e.response?.headers);
+      DI<Talker>().log(e.response?.redirects);
       final parseError = pasreDioException(e);
 
       ErrorUtil.logError(

@@ -19,8 +19,12 @@ class DioModule {
     BaseOptions(
       baseUrl: kBaseUrl,
       headers: {
-        'accept': 'application/json',
-        'Content-Language': 'ru', //default
+        // 'accept': 'application/json',
+        // 'Content-Language': 'ru', //default
+        'Cookie': 'JSESSIONID=934A109C8755D46A8EBAC82671979FBE',
+        'set-cookie': 'JSESSIONID=934A109C8755D46A8EBAC82671979FBE',
+        // 'Connection': 'keep-alive',
+        // 'User-Agent': 'PostmanRuntime/7.38.0',
       },
     ),
   );

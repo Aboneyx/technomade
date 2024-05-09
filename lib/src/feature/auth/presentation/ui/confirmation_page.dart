@@ -84,7 +84,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
                     ],
                   ),
                   onCompleted: (value) {
-                    BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(state: AppState.inAppState()));
+                    // BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(state: AppState.inAppState()));
                     context.router.popUntil((route) => route.settings.name == LauncherRoute.name);
                   },
                 ),

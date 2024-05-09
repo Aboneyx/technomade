@@ -13,7 +13,7 @@ class _BaseState extends State<Base> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    // return AutoTabsScaffold(
+      // return AutoTabsScaffold(
       backgroundColor: AppColors.static,
     );
   }

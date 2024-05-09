@@ -24,9 +24,9 @@ class CustomLoadingWidget extends StatelessWidget {
           child: CircularProgressIndicator.adaptive(
             value: value,
             backgroundColor: isError ? Colors.red : AppColors.mainColor, //  null,
-            // valueColor: AlwaysStoppedAnimation<Color>(
-            //   context.theme.background, //<-- SEE HERE
-            // ),
+            valueColor: const AlwaysStoppedAnimation<Color>(
+              AppColors.static, //<-- SEE HERE
+            ),
           ),
         ),
       ),

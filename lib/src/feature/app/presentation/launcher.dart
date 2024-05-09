@@ -66,7 +66,7 @@ class _LauncherState extends State<Launcher> with WidgetsBindingObserver {
     return BlocConsumer<AppBloc, AppState>(
       listener: (context, state) {
         state.whenOrNull(
-          inAppState: () {},
+          inAppState: (user) {},
           errorState: (message) {
             SnackBarUtil.showErrorTopShortToast(context, 'AppBloc => $message');
           },
@@ -77,9 +77,21 @@ class _LauncherState extends State<Launcher> with WidgetsBindingObserver {
           loadingState: () => const _Scaffold(
             child: CustomLoadingWidget(),
           ),
-          inAppState: () => const Base(),
+          inAppState: (user) {
+            if (user != null && user.role == 'DRIVER') {
+              return const MainDriverPage();
+            } else if (user != null && user.role == 'PASSENGER') {
+              return const Base();
+            } else {
+              return const _Scaffold(
+                child: Center(
+                  child: Text('Unknown Error'),
+                ),
+              );
+            }
+          },
           notAuthorizedState: () => const OnboardingPage(),
-          orElse: () => const MainDriverPage(),
+          orElse: () => const CustomLoadingWidget(isError: true),
         );
       },
     ); // OnBoardingPage();

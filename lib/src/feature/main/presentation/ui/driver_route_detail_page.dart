@@ -24,15 +24,15 @@ class _DriverRouteDetailPageState extends State<DriverRouteDetailPage> {
           padding: const EdgeInsets.only(left: 16),
           child: IconButton(
             padding: EdgeInsets.zero,
-            splashRadius: 24,
-            constraints: const BoxConstraints(maxHeight: 24, maxWidth: 24),
+            // splashRadius: 24,
+            // constraints: const BoxConstraints(maxHeight: 24, maxWidth: 24),
             onPressed: () {
               context.router.maybePop();
             },
             icon: SvgPicture.asset(Assets.icons.arrowLeftDropCircleOutline),
           ),
         ),
-        leadingWidth: 48,
+        leadingWidth: 60,
         title: const Text(
           'Almaty - Shymkent',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
