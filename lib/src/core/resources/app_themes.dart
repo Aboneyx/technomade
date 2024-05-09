@@ -27,7 +27,7 @@ mixin AppTheme {
         appBarTheme: const AppBarTheme(
           elevation: 0,
           // systemOverlayStyle: SystemUiOverlayStyle.dark,
-          backgroundColor: Colors.transparent,
+          // backgroundColor: Colors.transparent,
           titleTextStyle: TextStyle(color: Colors.black),
           centerTitle: true,
         ),
