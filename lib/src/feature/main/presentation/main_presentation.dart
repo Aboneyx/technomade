@@ -14,3 +14,4 @@ export 'ui/search_passenger_page.dart';
 export 'ui/search_passenger_result_page.dart';
 export 'ui/search_result_detail_page.dart';
 export 'ui/show_qr_page.dart';
+export 'vmodel/create_route_vmodel.dart';

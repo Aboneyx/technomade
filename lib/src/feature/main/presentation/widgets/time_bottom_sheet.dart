@@ -112,6 +112,7 @@ class _TimeBottomSheetState extends State<TimeBottomSheet> {
             ),
             child: CupertinoDatePicker(
               initialDateTime: selectedDay,
+              use24hFormat: true,
               onDateTimeChanged: (value) {
                 selectedDay = value;
               },

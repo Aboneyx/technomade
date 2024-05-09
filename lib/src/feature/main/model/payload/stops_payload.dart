@@ -9,8 +9,8 @@ part 'stops_payload.g.dart';
 class StopsPayload with _$StopsPayload {
   const factory StopsPayload({
     String? station,
-    String? arrivalTime,
-    String? departureTime,
+    DateTime? arrivalTime,
+    DateTime? departureTime,
     int? cost,
   }) = _StopsPayload;
 
