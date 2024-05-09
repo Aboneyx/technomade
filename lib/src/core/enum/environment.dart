@@ -3,8 +3,16 @@
 const String kBaseUrl = 'https://zaula.up.railway.app';
 
 mixin BackendEndpointCollection {
+  /// AUTH
   static const String LOGIN = '/login';
   static const String REGISTRATION = '/registration';
   static const String REGISTRATION_RESEND = '/registration/resend';
   static const String REGISTRATION_CONFIRM = '/registration/confirm';
+
+  /// DRIVER
+  static const String DRIVER_ROUTES = '/driver/route';
+  static const String DRIVER_ROUTE_CREATE = '/driver/route/create';
+  
+  /// COMMON
+  static const String STATION_LIST = '/common/station/list';
 }

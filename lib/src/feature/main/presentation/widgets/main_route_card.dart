@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:technomade/gen/assets.gen.dart';
+import 'package:technomade/src/feature/main/model/route_dto.dart';
 import 'package:timelines/timelines.dart';
 
 class MainRouteCard extends StatefulWidget {
   final bool isPassenger;
   final bool hasTimeline;
   final Function()? onTap;
+  final RouteDTO? route;
   const MainRouteCard({
     super.key,
     this.isPassenger = false,
     this.hasTimeline = true,
     this.onTap,
+    this.route,
   });
 
   @override
@@ -20,6 +23,7 @@ class MainRouteCard extends StatefulWidget {
 
 class _MainRouteCardState extends State<MainRouteCard> {
   bool isExpanded = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,12 +39,16 @@ class _MainRouteCardState extends State<MainRouteCard> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Expanded(
-                    child: Text(
-                      'Almaty - Shymkent',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                  if (widget.route != null &&
+                      widget.route!.routeStations != null &&
+                      widget.route!.routeStations!.isNotEmpty)
+                    Expanded(
+                      child: Text(
+                        '${widget.route!.routeStations!.first.station?.name ?? 'no name'} -'
+                        ' ${widget.route!.routeStations!.last.station?.name ?? 'no name'}',
+                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                      ),
                     ),
-                  ),
                   if (!widget.isPassenger && widget.hasTimeline)
                     IconButton(
                       padding: EdgeInsets.zero,
