@@ -23,7 +23,7 @@ mixin AppTheme {
         // textTheme: GoogleFonts.latoTextTheme(bodyColor: Colors.white, displayColor: Colors.white),
         scaffoldBackgroundColor: AppColors.static,
         brightness: Brightness.light,
-        primaryColor: AppColors.static,
+        // primaryColor: AppColors.static,
         appBarTheme: const AppBarTheme(
           elevation: 0,
           // systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -32,7 +32,7 @@ mixin AppTheme {
           centerTitle: true,
         ),
         useMaterial3: true,
-        // colorSchemeSeed: AppColors.kPrimary,
+        colorSchemeSeed: AppColors.mainColor,
         bottomSheetTheme: const BottomSheetThemeData(
           backgroundColor: AppColors.static,
           modalBarrierColor: Color.fromRGBO(0, 0, 0, 0.5),
@@ -49,7 +49,6 @@ mixin AppTheme {
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
           fillColor: AppColors.static,
-          
           hintStyle: const TextStyle(
             fontSize: 17,
             color: AppColors.labelColorLightSecondary,

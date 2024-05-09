@@ -29,7 +29,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return AppRouterBuilder(
@@ -39,11 +38,6 @@ class MyApp extends StatelessWidget {
           routeInformationParser: parser,
           routerDelegate: routerDelegate,
           theme: AppTheme.light,
-          // ThemeData(
-          //   colorScheme: ColorScheme.fromSeed(seedColor: AppColors.mainColor),
-          //   brightness: Brightness.light,
-          //   useMaterial3: true,
-          // ),
           themeMode: ThemeMode.light,
           builder: (context, child) => MediaQuery.withClampedTextScaling(
             minScaleFactor: 1,

@@ -13,7 +13,7 @@ class GlobalScope extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => AppBloc(),
-        )
+        ),
       ],
       child: child,
     );
