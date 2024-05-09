@@ -66,7 +66,7 @@ class _PassangerBaseState extends State<PassengerBase> {
           const NavigationDestination(
             icon: Icon(Icons.search_outlined),
             selectedIcon: Icon(Icons.search),
-            label: 'Create',
+            label: 'Search',
           ),
           const NavigationDestination(
             icon: Icon(Icons.person_outline),

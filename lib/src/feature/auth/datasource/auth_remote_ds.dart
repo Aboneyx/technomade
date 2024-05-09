@@ -259,11 +259,11 @@ class AuthRemoteDSImpl with NetworkHelper implements IAuthRemoteDS {
           'username': username,
           'code': code,
         },
-        options: Options(
-          headers: {
-            'Authorization': basicAuth,
-          },
-        ),
+        // options: Options(
+        //   headers: {
+        //     'Authorization': basicAuth,
+        //   },
+        // ),
       );
 
       final user = UserDTO.fromJson(dioResponse.data as Map<String, dynamic>);
