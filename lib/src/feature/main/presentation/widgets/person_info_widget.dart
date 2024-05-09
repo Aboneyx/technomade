@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:technomade/src/feature/auth/model/user_dto.dart';
 
 class PersonInfoWidget extends StatelessWidget {
+  final UserDTO? driver;
   const PersonInfoWidget({
     super.key,
+    this.driver,
   });
 
   @override
@@ -21,17 +24,17 @@ class PersonInfoWidget extends StatelessWidget {
         const SizedBox(
           width: 16,
         ),
-        const Column(
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Aleksey Ivanov Yutong',
-              style: TextStyle(fontSize: 16),
+              '${driver?.firstName ?? ''} ${driver?.lastName}',
+              style: const TextStyle(fontSize: 16),
             ),
-            Text(
-              '“Lucia” Ltd',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-            ),
+            // const Text(
+            //   '“Lucia” Ltd',
+            //   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            // ),
           ],
         ),
       ],

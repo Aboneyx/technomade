@@ -135,7 +135,7 @@ class _SearchPassengerPageState extends State<SearchPassengerPage> {
                       children: [
                         Expanded(
                           child: Text(
-                            selectedDate != null ? DateFormat().format(selectedDate!) : 'Date',
+                            selectedDate != null ? DateFormat('yyyy-MM-dd').format(selectedDate!) : 'Date',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: selectedDate != null ? FontWeight.w600 : null,
@@ -156,7 +156,13 @@ class _SearchPassengerPageState extends State<SearchPassengerPage> {
               text: 'Search',
               onTap: () {
                 if (fromStation != null && fromStation!.name != null && toStation != null && toStation!.name != null) {
-                  context.router.push(SearchPassengerResultRoute(from: fromStation!.name!, to: toStation!.name!));
+                  context.router.push(
+                    SearchPassengerResultRoute(
+                      from: fromStation!.name!,
+                      to: toStation!.name!,
+                      date: selectedDate != null ? DateFormat('yyyy-MM-dd').format(selectedDate!) : null,
+                    ),
+                  );
                 } else {
                   SnackBarUtil.showErrorTopShortToast(context, 'Fill required fields');
                 }

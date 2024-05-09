@@ -76,7 +76,11 @@ class _SearchPassengerResultPageState extends State<SearchPassengerResultPage> {
                 hasTimeline: false,
                 route: routes[index],
                 onTap: () {
-                  context.router.push(const SearchResultDetailRoute());
+                  context.router.push(
+                    SearchResultDetailRoute(
+                      route: routes[index],
+                    ),
+                  );
                 },
               ),
               separatorBuilder: (context, index) => const SizedBox(

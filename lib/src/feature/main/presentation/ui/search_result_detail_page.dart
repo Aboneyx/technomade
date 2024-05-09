@@ -5,11 +5,13 @@ import 'package:technomade/gen/assets.gen.dart';
 import 'package:technomade/src/core/resources/resources.dart';
 import 'package:technomade/src/core/router/app_router.dart';
 import 'package:technomade/src/feature/auth/presentation/widgets/custom_button.dart';
+import 'package:technomade/src/feature/main/model/route_dto.dart';
 import 'package:technomade/src/feature/main/presentation/widgets/person_info_widget.dart';
 
 @RoutePage()
 class SearchResultDetailPage extends StatefulWidget {
-  const SearchResultDetailPage({super.key});
+  final RouteDTO route;
+  const SearchResultDetailPage({super.key, required this.route});
 
   @override
   State<SearchResultDetailPage> createState() => _SearchResultDetailPageState();
@@ -48,7 +50,9 @@ class _SearchResultDetailPageState extends State<SearchResultDetailPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const PersonInfoWidget(),
+                  PersonInfoWidget(
+                    driver: widget.route.driver,
+                  ),
                   const SizedBox(
                     height: 24,
                   ),
@@ -71,15 +75,16 @@ class _SearchResultDetailPageState extends State<SearchResultDetailPage> {
                   const SizedBox(
                     height: 24,
                   ),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: AppColors.mainColor),
+                  if (widget.route.description != null)
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: AppColors.mainColor),
+                      ),
+                      child: Text(widget.route.description!),
                     ),
-                    child: const Text('Bus code 192929 mfkfmvkmvfkvmfkvmkf'),
-                  ),
                 ],
               ),
             ),

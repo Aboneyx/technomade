@@ -122,15 +122,15 @@ class _MainRouteCardState extends State<MainRouteCard> {
                 ],
               ),
               const Text('12 martch - 13 martch'),
-              if (!widget.isPassenger) ...[
-                const SizedBox(
-                  height: 8,
-                ),
-                const Text(
-                  '10 000 ₸',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                ),
-              ],
+              // if (!widget.isPassenger) ...[
+              //   const SizedBox(
+              //     height: 8,
+              //   ),
+              //   const Text(
+              //     '10 000 ₸',
+              //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              //   ),
+              // ],
             ],
           ),
         ),

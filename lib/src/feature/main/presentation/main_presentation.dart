@@ -1,3 +1,4 @@
+export '../model/route_dto.dart';
 export 'ui/book_info_page.dart';
 export 'ui/book_seat_page.dart';
 export 'ui/create_route_page.dart';
