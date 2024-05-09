@@ -44,6 +44,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Pinput(
+                  autofocus: true,
                   separatorBuilder: (index) => const SizedBox(
                     width: 24,
                   ),

@@ -78,6 +78,7 @@ class _LauncherState extends State<Launcher> with WidgetsBindingObserver {
             child: CustomLoadingWidget(),
           ),
           inAppState: () => const Base(),
+          notAuthorizedState: () => const OnboardingPage(),
           orElse: () => const MainDriverPage(),
         );
       },

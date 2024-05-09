@@ -69,11 +69,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   ) async =>
       emit(event.state);
 
-  @override
-  void onTransition(Transition<AppEvent, AppState> transition) {
-    log(transition.toString(), name: _tag);
-    super.onTransition(transition);
-  }
+  // @override
+  // void onTransition(Transition<AppEvent, AppState> transition) {
+  //   log(transition.toString(), name: _tag);
+  //   super.onTransition(transition);
+  // }
 
   // @override
   // void onChange(Change<AppState> change) {

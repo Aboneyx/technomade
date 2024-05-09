@@ -6,7 +6,9 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:talker_dio_logger/talker_dio_logger_interceptor.dart';
 import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:technomade/src/core/enum/environment.dart';
+import 'package:technomade/src/core/services/locator_service.dart';
 import 'package:technomade/src/feature/auth/datasource/auth_local_ds.dart';
 
 class DioModule {
@@ -36,6 +38,7 @@ class DioModule {
       //   compact: false,
       // ),
       TalkerDioLogger(
+        talker: DI<Talker>(),
         settings: const TalkerDioLoggerSettings(
           printRequestHeaders: true,
           printResponseHeaders: true,
