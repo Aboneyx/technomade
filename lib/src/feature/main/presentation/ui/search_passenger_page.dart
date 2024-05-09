@@ -7,7 +7,7 @@ import 'package:technomade/src/core/resources/resources.dart';
 import 'package:technomade/src/core/router/app_router.dart';
 import 'package:technomade/src/feature/auth/presentation/widgets/custom_button.dart';
 import 'package:technomade/src/feature/main/presentation/widgets/date_bottom_sheet.dart';
-import 'package:technomade/src/feature/main/presentation/widgets/from_bottom_sheet.dart';
+import 'package:technomade/src/feature/main/presentation/widgets/choose_station_bottom_sheet.dart';
 
 @RoutePage()
 class SearchPassengerPage extends StatefulWidget {

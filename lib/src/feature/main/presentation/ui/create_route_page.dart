@@ -1,21 +1,36 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:technomade/gen/assets.gen.dart';
 import 'package:technomade/src/core/resources/resources.dart';
 import 'package:technomade/src/core/router/app_router.dart';
 import 'package:technomade/src/feature/auth/presentation/widgets/custom_button.dart';
+import 'package:technomade/src/feature/main/presentation/vmodel/create_route_vmodel.dart';
+import 'package:technomade/src/feature/main/presentation/widgets/choose_station_bottom_sheet.dart';
 import 'package:technomade/src/feature/main/presentation/widgets/date_bottom_sheet.dart';
-import 'package:technomade/src/feature/main/presentation/widgets/from_bottom_sheet.dart';
 import 'package:technomade/src/feature/main/presentation/widgets/time_bottom_sheet.dart';
 
 @RoutePage()
-class CreateRoutePage extends StatefulWidget {
+class CreateRoutePage extends StatefulWidget implements AutoRouteWrapper {
   const CreateRoutePage({super.key});
 
   @override
   State<CreateRoutePage> createState() => _CreateRoutePageState();
+
+  @override
+  Widget wrappedRoute(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => CreateRouteVmodel(),
+        ),
+      ],
+      child: this,
+    );
+  }
 }
 
 class _CreateRoutePageState extends State<CreateRoutePage> {
@@ -35,9 +50,7 @@ class _CreateRoutePageState extends State<CreateRoutePage> {
               'Creating a route',
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
             ),
-            const SizedBox(
-              height: 32,
-            ),
+            const SizedBox(height: 32),
             Container(
               height: 40,
               width: double.infinity,
@@ -50,8 +63,8 @@ class _CreateRoutePageState extends State<CreateRoutePage> {
                 color: Colors.transparent,
                 child: InkWell(
                   borderRadius: BorderRadius.circular(8),
-                  onTap: () {
-                    FromBottomSheet.show(context);
+                  onTap: () async {
+                    await FromBottomSheet.show(context);
                   },
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
@@ -108,9 +121,7 @@ class _CreateRoutePageState extends State<CreateRoutePage> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  width: 8,
-                ),
+                const SizedBox(width: 8),
                 Expanded(
                   child: Container(
                     height: 40,
@@ -146,9 +157,7 @@ class _CreateRoutePageState extends State<CreateRoutePage> {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 24,
-            ),
+            const SizedBox(height: 24),
             CustomButton(
               text: 'Create',
               onTap: () {
