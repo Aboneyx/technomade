@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:technomade/src/core/router/app_router.dart';
 import 'package:technomade/src/feature/main/presentation/widgets/main_route_card.dart';
 
 @RoutePage()
@@ -16,8 +17,11 @@ class _MainPassengerPageState extends State<MainPassengerPage> {
     return SafeArea(
       child: ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-        itemBuilder: (context, index) => const MainRouteCard(
+        itemBuilder: (context, index) => MainRouteCard(
           isPassenger: true,
+          onTap: () {
+            context.router.push(const PassengerTicketDetailRoute());
+          },
         ),
         separatorBuilder: (context, index) => const SizedBox(
           height: 16,
