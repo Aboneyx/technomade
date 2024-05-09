@@ -1,13 +1,17 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:technomade/gen/assets.gen.dart';
-import 'package:technomade/src/core/router/app_router.dart';
 import 'package:timelines/timelines.dart';
 
 class MainRouteCard extends StatefulWidget {
+  final bool isPassenger;
+  final bool hasTimeline;
+  final Function()? onTap;
   const MainRouteCard({
     super.key,
+    this.isPassenger = false,
+    this.hasTimeline = true,
+    this.onTap,
   });
 
   @override
@@ -22,9 +26,7 @@ class _MainRouteCardState extends State<MainRouteCard> {
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(width: 0.5)),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
-        onTap: () {
-          context.router.push(const DriverRouteDetailRoute());
-        },
+        onTap: widget.onTap,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -33,13 +35,14 @@ class _MainRouteCardState extends State<MainRouteCard> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Almaty - Shymkent',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                  const Expanded(
+                    child: Text(
+                      'Almaty - Shymkent',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                    ),
                   ),
-                  RotatedBox(
-                    quarterTurns: isExpanded ? 2 : 0,
-                    child: IconButton(
+                  if (!widget.isPassenger && widget.hasTimeline)
+                    IconButton(
                       padding: EdgeInsets.zero,
                       splashRadius: 24,
                       constraints: const BoxConstraints(maxHeight: 24, maxWidth: 24),
@@ -47,9 +50,15 @@ class _MainRouteCardState extends State<MainRouteCard> {
                         isExpanded = !isExpanded;
                         setState(() {});
                       },
-                      icon: SvgPicture.asset(Assets.icons.chevronDown),
+                      icon: RotatedBox(
+                        quarterTurns: isExpanded ? 2 : 0,
+                        child: SvgPicture.asset(
+                          Assets.icons.chevronDown,
+                          height: 24,
+                          width: 24,
+                        ),
+                      ),
                     ),
-                  ),
                 ],
               ),
               if (isExpanded)
@@ -105,13 +114,15 @@ class _MainRouteCardState extends State<MainRouteCard> {
                 ],
               ),
               const Text('12 martch - 13 martch'),
-              const SizedBox(
-                height: 8,
-              ),
-              const Text(
-                '10 000 ₸',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-              ),
+              if (!widget.isPassenger) ...[
+                const SizedBox(
+                  height: 8,
+                ),
+                const Text(
+                  '10 000 ₸',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                ),
+              ],
             ],
           ),
         ),

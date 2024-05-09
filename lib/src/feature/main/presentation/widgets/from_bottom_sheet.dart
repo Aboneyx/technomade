@@ -3,18 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:technomade/src/core/resources/resources.dart';
 
 class FromBottomSheet extends StatefulWidget {
+  final String? title;
   const FromBottomSheet({
     super.key,
+    this.title,
   });
 
   static Future<void> show(
-    BuildContext context,
-  ) async =>
+    BuildContext context, {
+    String? title,
+  }) async =>
       showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
         useRootNavigator: true,
-        builder: (_) => const FromBottomSheet(),
+        builder: (_) => FromBottomSheet(
+          title: title,
+        ),
       );
 
   @override
@@ -68,16 +73,16 @@ class _FromBottomSheetState extends State<FromBottomSheet> {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(
+            Padding(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 16,
                 vertical: 8,
               ),
               child: Row(
                 children: [
                   Text(
-                    'From',
-                    style: TextStyle(
+                    widget.title ?? 'From',
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                     ),
