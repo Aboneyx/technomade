@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:technomade/gen/assets.gen.dart';
+import 'package:technomade/src/core/router/app_router.dart';
 import 'package:technomade/src/feature/main/presentation/widgets/main_route_card.dart';
 
 @RoutePage()
@@ -39,8 +40,11 @@ class _SearchPassengerResultPageState extends State<SearchPassengerResultPage> {
       ),
       body: ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-        itemBuilder: (context, index) => const MainRouteCard(
+        itemBuilder: (context, index) => MainRouteCard(
           hasTimeline: false,
+          onTap: () {
+            context.router.push(const SearchResultDetailRoute());
+          },
         ),
         separatorBuilder: (context, index) => const SizedBox(
           height: 16,

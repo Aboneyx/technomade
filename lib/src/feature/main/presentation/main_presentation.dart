@@ -1,3 +1,5 @@
+export 'ui/book_info_page.dart';
+export 'ui/book_seat_page.dart';
 export 'ui/create_route_page.dart';
 export 'ui/create_route_second_page.dart';
 export 'ui/driver_route_detail_page.dart';
@@ -8,3 +10,4 @@ export 'ui/profile_page.dart';
 export 'ui/scan_ticket_page.dart';
 export 'ui/search_passenger_page.dart';
 export 'ui/search_passenger_result_page.dart';
+export 'ui/search_result_detail_page.dart';
