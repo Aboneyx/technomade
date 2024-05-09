@@ -50,7 +50,7 @@ class AuthRepositoryImpl implements IAuthRepository {
     required String password,
   }) async {
     final res = await _remoteDS.login(
-      username: username,
+      username: username.toLowerCase(),
       password: password,
     );
 
@@ -81,7 +81,7 @@ class AuthRepositoryImpl implements IAuthRepository {
       _remoteDS.registration(
         firstName: firstName,
         lastName: lastName,
-        username: username,
+        username: username.toLowerCase(),
         password: password,
         role: role,
       );
@@ -93,7 +93,7 @@ class AuthRepositoryImpl implements IAuthRepository {
     required String code,
   }) async {
     final res = await _remoteDS.registrationConfirm(
-      username: username,
+      username: username.toLowerCase(),
       password: password,
       code: code,
     );
