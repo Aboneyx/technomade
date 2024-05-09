@@ -11,6 +11,13 @@ abstract class IMainRepository {
     required int routeId,
   });
 
+  /// Passenger API part
+  Future<Either<String, List<RouteDTO>>> searchPassengerRoute({
+    required String from,
+    required String to,
+    String? date,
+  });
+
   /// Common API
   Future<Either<String, List<StationDTO>>> getStationList();
 }
@@ -35,4 +42,12 @@ class MainRepositoryImpl implements IMainRepository {
 
   @override
   Future<Either<String, List<StationDTO>>> getStationList() async => _remoteDS.getStationList();
+
+  @override
+  Future<Either<String, List<RouteDTO>>> searchPassengerRoute({
+    required String from,
+    required String to,
+    String? date,
+  }) async =>
+      _remoteDS.searchPassengerRoute(from: from, to: to, date: date);
 }

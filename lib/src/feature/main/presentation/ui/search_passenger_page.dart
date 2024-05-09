@@ -5,9 +5,11 @@ import 'package:intl/intl.dart';
 import 'package:technomade/gen/assets.gen.dart';
 import 'package:technomade/src/core/resources/resources.dart';
 import 'package:technomade/src/core/router/app_router.dart';
+import 'package:technomade/src/core/utils/snackbar_util.dart';
 import 'package:technomade/src/feature/auth/presentation/widgets/custom_button.dart';
-import 'package:technomade/src/feature/main/presentation/widgets/date_bottom_sheet.dart';
+import 'package:technomade/src/feature/main/model/station_dto.dart';
 import 'package:technomade/src/feature/main/presentation/widgets/choose_station_bottom_sheet.dart';
+import 'package:technomade/src/feature/main/presentation/widgets/date_bottom_sheet.dart';
 
 @RoutePage()
 class SearchPassengerPage extends StatefulWidget {
@@ -18,8 +20,9 @@ class SearchPassengerPage extends StatefulWidget {
 }
 
 class _SearchPassengerPageState extends State<SearchPassengerPage> {
+  StationDTO? fromStation;
+  StationDTO? toStation;
   DateTime? selectedDate;
-  DateTime? selectedTime;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,14 +51,23 @@ class _SearchPassengerPageState extends State<SearchPassengerPage> {
                 color: Colors.transparent,
                 child: InkWell(
                   borderRadius: BorderRadius.circular(8),
-                  onTap: () {
-                    FromBottomSheet.show(context);
+                  onTap: () async {
+                    final StationDTO? station = await FromBottomSheet.show(
+                      context,
+                    );
+                    if (station != null) {
+                      fromStation = station;
+                      setState(() {});
+                    }
                   },
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'From',
-                      style: TextStyle(fontSize: 16),
+                      fromStation?.name ?? 'From',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: fromStation != null ? FontWeight.w600 : null,
+                      ),
                     ),
                   ),
                 ),
@@ -76,14 +88,21 @@ class _SearchPassengerPageState extends State<SearchPassengerPage> {
                 color: Colors.transparent,
                 child: InkWell(
                   borderRadius: BorderRadius.circular(8),
-                  onTap: () {
-                    FromBottomSheet.show(context, title: 'To');
+                  onTap: () async {
+                    final StationDTO? station = await FromBottomSheet.show(context, title: 'To');
+                    if (station != null) {
+                      toStation = station;
+                      setState(() {});
+                    }
                   },
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'To',
-                      style: TextStyle(fontSize: 16),
+                      toStation?.name ?? 'To',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: toStation != null ? FontWeight.w600 : null,
+                      ),
                     ),
                   ),
                 ),
@@ -136,7 +155,11 @@ class _SearchPassengerPageState extends State<SearchPassengerPage> {
             CustomButton(
               text: 'Search',
               onTap: () {
-                context.router.push(const SearchPassengerResultRoute());
+                if (fromStation != null && fromStation!.name != null && toStation != null && toStation!.name != null) {
+                  context.router.push(SearchPassengerResultRoute(from: fromStation!.name!, to: toStation!.name!));
+                } else {
+                  SnackBarUtil.showErrorTopShortToast(context, 'Fill required fields');
+                }
               },
             ),
           ],

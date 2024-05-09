@@ -14,6 +14,13 @@ abstract class IMainRemoteDS {
     required int routeId,
   });
 
+  /// Passenger API part
+  Future<Either<String, List<RouteDTO>>> searchPassengerRoute({
+    required String from,
+    required String to,
+    String? date,
+  });
+
   /// Common API
   Future<Either<String, List<StationDTO>>> getStationList();
 }
@@ -104,6 +111,48 @@ class MainRemoteDSImpl with NetworkHelper implements IMainRemoteDS {
       final mapResponse = dioResponse.data as Map<String, dynamic>;
 
       return Right(RouteDTO.fromJson(mapResponse));
+    } on DioException catch (e, stackTrace) {
+      final parseError = pasreDioException(e);
+
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: '${BackendEndpointCollection.LOGIN} => $parseError',
+      );
+
+      return Left(parseError);
+    } on Object catch (e, stackTrace) {
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: 'Object error => $e',
+      );
+
+      return Left('Object Error: $e');
+    }
+  }
+
+  @override
+  Future<Either<String, List<RouteDTO>>> searchPassengerRoute({
+    required String from,
+    required String to,
+    String? date,
+  }) async {
+    try {
+      final dioResponse = await dio.get(
+        BackendEndpointCollection.PASSENGER_SEARCH,
+        queryParameters: {
+          'startStop': from,
+          'finishStop': to,
+          if (date != null) 'date': date,
+        },
+      );
+
+      final listReponse = dioResponse.data as List;
+
+      final List<RouteDTO> routes = listReponse.map((e) => RouteDTO.fromJson(e as Map<String, dynamic>)).toList();
+
+      return Right(routes);
     } on DioException catch (e, stackTrace) {
       final parseError = pasreDioException(e);
 
