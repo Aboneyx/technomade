@@ -15,9 +15,22 @@ abstract class IAuthRemoteDS {
     required String password,
   });
 
+  @Deprecated('example api')
   Future<Either<String, String>> getBasicAuthInfo({
     required String username,
     required String password,
+  });
+
+  Future<Either<String, String>> registration({
+    required String firstName,
+    required String lastName,
+    required String username,
+    required String password,
+    required String role,
+  });
+
+  Future<Either<String, String>> resendConfirmationCode({
+    required String username,
   });
 }
 
@@ -102,6 +115,105 @@ class AuthRemoteDSImpl with NetworkHelper implements IAuthRemoteDS {
       DI<Talker>().log(e.response);
       DI<Talker>().log(e.response?.headers);
       DI<Talker>().log(e.response?.redirects);
+      final parseError = pasreDioException(e);
+
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: '${BackendEndpointCollection.LOGIN} => $parseError',
+      );
+
+      return Left(parseError);
+    } on Object catch (e, stackTrace) {
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: 'Object error => $e',
+      );
+
+      return Left('Object Error: $e');
+    }
+  }
+
+  @override
+  Future<Either<String, String>> registration({
+    required String firstName,
+    required String lastName,
+    required String username,
+    required String password,
+    required String role,
+  }) async {
+    try {
+      // final String basicAuth = 'Basic ${base64.encode(utf8.encode('$username:$password'))}';
+
+      final dioResponse = await dio.post(
+        BackendEndpointCollection.REGISTRATION,
+        data: {
+          "firstName": firstName,
+          "lastName": lastName,
+          "password": password,
+          "username": username,
+          "role": role,
+        },
+      );
+
+      final responseAsMap = dioResponse.data as Map<String, dynamic>;
+
+      final token = responseAsMap['token'] as String?;
+
+      if (token != null) {
+        return Right(token);
+      } else {
+        return const Left('Token is null');
+      }
+    } on DioException catch (e, stackTrace) {
+      DI<Talker>().log(e.response);
+      DI<Talker>().log(e.response?.headers);
+      DI<Talker>().log(e.response?.redirects);
+      final parseError = pasreDioException(e);
+
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: '${BackendEndpointCollection.LOGIN} => $parseError',
+      );
+
+      return Left(parseError);
+    } on Object catch (e, stackTrace) {
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: 'Object error => $e',
+      );
+
+      return Left('Object Error: $e');
+    }
+  }
+
+  @override
+  Future<Either<String, String>> resendConfirmationCode({
+    required String username,
+  }) async {
+    try {
+      // final String basicAuth = 'Basic ${base64.encode(utf8.encode('$username:$password'))}';
+
+      final dioResponse = await dio.post(
+        BackendEndpointCollection.REGISTRATION_RESEND,
+        data: {
+          "username": username,
+        },
+      );
+
+      final responseAsMap = dioResponse.data as Map<String, dynamic>;
+
+      final token = responseAsMap['token'] as String?;
+
+      if (token != null) {
+        return Right(token);
+      } else {
+        return const Left('Token is null');
+      }
+    } on DioException catch (e, stackTrace) {
       final parseError = pasreDioException(e);
 
       ErrorUtil.logError(

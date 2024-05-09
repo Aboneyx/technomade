@@ -80,9 +80,9 @@ mixin AppTheme {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(4),
-            borderSide: BorderSide(
-              color: Colors.white.withOpacity(0.5),
-            ),
+            // borderSide: BorderSide(
+            //   color: Colors.white.withOpacity(0.5),
+            // ),
           ),
         ),
         tabBarTheme: const TabBarTheme(

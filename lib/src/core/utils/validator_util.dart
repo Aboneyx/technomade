@@ -10,4 +10,24 @@ class ValidatorUtil {
 
     return null;
   }
+
+  static String? passwordValidator(
+    BuildContext context,
+    String? value, {
+    String? repeatPassword,
+  }) {
+    if (value == null || value.isEmpty) {
+      return 'Required to fill in the field';
+    }
+
+    if (value.length < 6) {
+      return 'The minimum password length is 6 symbols';
+    }
+
+    if(value != repeatPassword) {
+      return "Passwords don't match";
+    }
+
+    return null;
+  }
 }

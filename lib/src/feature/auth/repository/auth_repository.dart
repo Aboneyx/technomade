@@ -18,6 +18,14 @@ abstract class IAuthRepository {
     required String username,
     required String password,
   });
+
+  Future<Either<String, String>> registration({
+    required String firstName,
+    required String lastName,
+    required String username,
+    required String password,
+    required String role,
+  });
 }
 
 class AuthRepositoryImpl implements IAuthRepository {
@@ -55,4 +63,20 @@ class AuthRepositoryImpl implements IAuthRepository {
 
   @override
   Future<void> clearUserFromCache() async => _localDS.removeUserFromCache();
+
+  @override
+  Future<Either<String, String>> registration({
+    required String firstName,
+    required String lastName,
+    required String username,
+    required String password,
+    required String role,
+  }) async =>
+      _remoteDS.registration(
+        firstName: firstName,
+        lastName: lastName,
+        username: username,
+        password: password,
+        role: role,
+      );
 }
