@@ -32,5 +32,8 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: DriverRouteDetailRoute.page),
         AutoRoute(page: MonitoringDriverRoute.page),
         AutoRoute(page: ScanTicketRoute.page),
+        AutoRoute(page: MainPassengerRoute.page),
+        AutoRoute(page: SearchPassengerRoute.page),
+        AutoRoute(page: SearchPassengerResultRoute.page),
       ];
 }
