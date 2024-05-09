@@ -15,7 +15,9 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController passwordConfirmController = TextEditingController();
 
@@ -39,36 +41,38 @@ class _SignUpPageState extends State<SignUpPage> {
                     'Registration',
                     style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700, color: AppColors.mainColor),
                   ),
-                  const SizedBox(
-                    height: 24,
-                  ),
+                  const SizedBox(height: 24),
                   CustomTextField(
-                    hintText: 'Phone number',
-                    controller: phoneController,
+                    hintText: 'Username',
+                    controller: usernameController,
                   ),
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  const SizedBox(height: 8),
                   CustomTextField(
-                    hintText: 'must be  8 characters',
+                    hintText: 'First Name',
+                    controller: firstNameController,
+                  ),
+                  const SizedBox(height: 8),
+                  CustomTextField(
+                    hintText: 'Last Name',
+                    controller: lastNameController,
+                  ),
+                  const SizedBox(height: 16),
+                  CustomTextField(
+                    hintText: 'Password must be 8 characters',
                     obscureText: true,
                     controller: passwordController,
                   ),
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  const SizedBox(height: 16),
                   CustomTextField(
                     hintText: 'Password again',
                     obscureText: true,
                     controller: passwordConfirmController,
                   ),
-                  const SizedBox(
-                    height: 24,
-                  ),
+                  const SizedBox(height: 24),
                   CustomButton(
                     text: 'Register',
                     onTap: () {
-                      context.router.push(ConfirmationRoute(phone: phoneController.text));
+                      context.router.push(ConfirmationRoute(phone: usernameController.text));
                     },
                   ),
                 ],

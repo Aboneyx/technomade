@@ -4,12 +4,20 @@ import 'package:technomade/src/feature/auth/datasource/auth_remote_ds.dart';
 import 'package:technomade/src/feature/auth/model/user_dto.dart';
 
 abstract class IAuthRepository {
+  ///
+  /// Local
+  ///
+  UserDTO? getUserFromCache();
+
+  Future<void> clearUserFromCache();
+
+  ///
+  /// Remote
+  ///
   Future<Either<String, UserDTO>> login({
     required String username,
     required String password,
   });
-
-  UserDTO? getUserFromCache();
 }
 
 class AuthRepositoryImpl implements IAuthRepository {
@@ -44,4 +52,7 @@ class AuthRepositoryImpl implements IAuthRepository {
 
   @override
   UserDTO? getUserFromCache() => _localDS.getUserFromCache();
+
+  @override
+  Future<void> clearUserFromCache() async => _localDS.removeUserFromCache();
 }

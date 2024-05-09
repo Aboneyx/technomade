@@ -8,7 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:technomade/src/core/utils/snackbar_util.dart';
 import 'package:technomade/src/feature/app/bloc/app_bloc.dart';
-import 'package:technomade/src/feature/app/presentation/base.dart';
+import 'package:technomade/src/feature/app/presentation/driver_base.dart';
+import 'package:technomade/src/feature/app/presentation/passenger_base.dart';
 import 'package:technomade/src/feature/app/widgets/custom_loading_widget.dart';
 import 'package:technomade/src/feature/auth/presentation/ui/onboarding_page.dart';
 import 'package:technomade/src/feature/main/presentation/main_presentation.dart';
@@ -38,6 +39,8 @@ class _LauncherState extends State<Launcher> with WidgetsBindingObserver {
     );
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+
+    // DI<IAuthRemoteDS>().getBasicAuthInfo(username: 'aboneyx', password: 'qwe123');
   }
 
   @override
@@ -79,9 +82,9 @@ class _LauncherState extends State<Launcher> with WidgetsBindingObserver {
           ),
           inAppState: (user) {
             if (user != null && user.role == 'DRIVER') {
-              return const MainDriverPage();
+              return const DriverBase();
             } else if (user != null && user.role == 'PASSENGER') {
-              return const Base();
+              return const PassengerBase();
             } else {
               return const _Scaffold(
                 child: Center(

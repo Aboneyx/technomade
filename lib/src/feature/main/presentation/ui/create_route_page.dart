@@ -21,10 +21,11 @@ class CreateRoutePage extends StatefulWidget {
 class _CreateRoutePageState extends State<CreateRoutePage> {
   DateTime? selectedDate;
   DateTime? selectedTime;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
+    return SafeArea(
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

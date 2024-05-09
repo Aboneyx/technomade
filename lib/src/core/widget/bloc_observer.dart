@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:l/l.dart';
+// import 'package:l/l.dart';
 
 extension on StringBuffer {
   /// Writes the type of the object in debug mode to make logs **readable** and
@@ -27,7 +27,7 @@ class AppBlocObserver extends BlocObserver {
 
     assemble(buffer);
 
-    l.vvvvvv(buffer.toString());
+    // l.vvvvvv(buffer.toString());
   }
 
   // @override
@@ -100,7 +100,7 @@ class AppBlocObserver extends BlocObserver {
         ..writeInfo(bloc),
     );
 
-    l.e(error, stackTrace);
+    // l.e(error, stackTrace);
   }
 
   @override

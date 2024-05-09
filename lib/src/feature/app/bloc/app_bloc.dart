@@ -24,6 +24,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         checkAuth: (_CheckAuth event) async => _checkAuth(event, emit),
         refreshLocal: (_RefreshLocal event) async => _refreshLocal(event, emit),
         chageState: (_ChangeState event) async => _changeState(event, emit),
+        logout: (_Logout event) => _logout(event, emit),
       ),
     );
   }
@@ -34,7 +35,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   ) async {
     final UserDTO? user = _authRepository.getUserFromCache();
 
-    if (user != null) {
+    if (user != null && user.basicAuth != null) {
       emit(AppState.inAppState(user: user));
     } else {
       emit(const AppState.notAuthorizedState());
@@ -81,6 +82,14 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   ) async =>
       emit(event.state);
 
+  Future<void> _logout(
+    _Logout event,
+    Emitter<AppState> emit,
+  ) async {
+    await _authRepository.clearUserFromCache();
+    emit(const AppState.notAuthorizedState());
+  }
+
   // @override
   // void onTransition(Transition<AppEvent, AppState> transition) {
   //   log(transition.toString(), name: _tag);
@@ -110,6 +119,8 @@ class AppEvent with _$AppEvent {
   const factory AppEvent.chageState({
     required AppState state,
   }) = _ChangeState;
+
+  const factory AppEvent.logout() = _Logout;
 }
 
 ///

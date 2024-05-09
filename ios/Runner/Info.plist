@@ -45,5 +45,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+    <string>The app needs access to your camera to scan the QR code</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>The app needs access to your photo to upload photos for the avatar</string>
 </dict>
 </plist>
