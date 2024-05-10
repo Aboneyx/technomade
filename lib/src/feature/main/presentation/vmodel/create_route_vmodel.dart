@@ -18,6 +18,13 @@ class CreateRouteVmodel extends ChangeNotifier {
 
   void removeStops(StopsPayload value) {
     _stops.removeWhere((element) => element.station == value.station && value.station != null);
+
+    if (_stops.isNotEmpty) {
+      _stops.first = _stops.first.copyWith(
+        cost: null,
+        arrivalTime: null,
+      );
+    }
     notifyListeners();
   }
 
@@ -32,5 +39,15 @@ class CreateRouteVmodel extends ChangeNotifier {
     _stops = [];
     _description = null;
     notifyListeners();
+  }
+
+  bool checkingStops(String station) {
+    for (int i = 0; i < _stops.length; i++) {
+      if (_stops[i].station == station) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }

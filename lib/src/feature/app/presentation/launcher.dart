@@ -12,8 +12,6 @@ import 'package:technomade/src/feature/app/presentation/driver_base.dart';
 import 'package:technomade/src/feature/app/presentation/passenger_base.dart';
 import 'package:technomade/src/feature/app/widgets/custom_loading_widget.dart';
 import 'package:technomade/src/feature/auth/presentation/ui/onboarding_page.dart';
-import 'package:technomade/src/feature/main/presentation/main_presentation.dart';
-import 'package:technomade/src/feature/main/presentation/ui/main_driver_page.dart';
 
 // ignore: unused_element
 const _tag = 'Launcher';

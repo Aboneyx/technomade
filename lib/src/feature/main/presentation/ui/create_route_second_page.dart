@@ -1,7 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +8,7 @@ import 'package:technomade/src/core/resources/resources.dart';
 import 'package:technomade/src/feature/auth/presentation/widgets/custom_button.dart';
 import 'package:technomade/src/feature/auth/presentation/widgets/custom_text_field.dart';
 import 'package:technomade/src/feature/main/presentation/vmodel/create_route_vmodel.dart';
-import 'package:technomade/src/feature/main/presentation/widgets/create_station_bottom_sheet.dart';
+import 'package:technomade/src/feature/main/presentation/widgets/add_stop_bottom_sheet.dart';
 import 'package:technomade/src/feature/main/presentation/widgets/stop_card.dart';
 
 @RoutePage()
@@ -108,7 +106,10 @@ class _CreateRouteSecondPageState extends State<CreateRouteSecondPage> {
                             splashRadius: 20,
                             constraints: const BoxConstraints(maxHeight: 24, maxWidth: 24),
                             onPressed: () {
-                              CreateStationBottomSheet.show(context);
+                              AddStopBottomSheet.show(
+                                context,
+                                createRouteVmodel: Provider.of<CreateRouteVmodel>(context, listen: false),
+                              );
                             },
                             icon: const Icon(Icons.add),
                           ),
@@ -144,7 +145,7 @@ class _CreateRouteSecondPageState extends State<CreateRouteSecondPage> {
             padding: const EdgeInsets.all(16.0).copyWith(top: 8),
             child: CustomElevatedButton(
               text: 'Create',
-              onPressed: v.stops.length > 2 ? () {} : null,
+              onPressed: v.stops.length > 1 && v.description != null && v.description!.isNotEmpty ? () {} : null,
               style: CustomElevatedButtonStyles.primaryButtonStyle(context),
               child: null,
             ),
