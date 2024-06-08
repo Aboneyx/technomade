@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:technomade/gen/assets.gen.dart';
+import 'package:technomade/src/core/common/constants.dart';
 import 'package:technomade/src/feature/main/model/route_dto.dart';
 import 'package:timelines/timelines.dart';
 
@@ -23,6 +25,17 @@ class MainRouteCard extends StatefulWidget {
 
 class _MainRouteCardState extends State<MainRouteCard> {
   bool isExpanded = false;
+  DateTime? departureTime;
+  DateTime? arrivalTime;
+
+  @override
+  void initState() {
+    if (widget.route != null && widget.route!.routeStations != null && widget.route!.routeStations!.isNotEmpty) {
+      departureTime = widget.route?.routeStations?.first.departureTime;
+      arrivalTime = widget.route?.routeStations?.last.arrivalTime;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +57,7 @@ class _MainRouteCardState extends State<MainRouteCard> {
                       widget.route!.routeStations!.isNotEmpty)
                     Expanded(
                       child: Text(
-                        '${widget.route!.routeStations!.first.station?.name ?? 'no name'} -'
-                        ' ${widget.route!.routeStations!.last.station?.name ?? 'no name'}',
+                        getRoutes(widget.route!.routeStations!.map((e) => e.station?.name ?? '').toList()),
                         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                       ),
                     ),
@@ -112,16 +124,39 @@ class _MainRouteCardState extends State<MainRouteCard> {
                 const SizedBox(
                   height: 8,
                 ),
-              const Row(
-                children: [
-                  Text('8:30-18:30'),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text('10 hours on the road'),
-                ],
-              ),
-              const Text('12 martch - 13 martch'),
+              if (departureTime != null && arrivalTime != null)
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          DateFormat('HH:mm').format(departureTime!),
+                        ),
+                        Text(
+                          DateFormat('dd MMMM').format(departureTime!),
+                        ),
+                      ],
+                    ),
+                    const Text('   -   '),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          DateFormat('HH:mm').format(arrivalTime!),
+                        ),
+                        Text(
+                          DateFormat('dd MMMM').format(arrivalTime!),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Text('${departureTime!.difference(arrivalTime!).inHours} hours on the road'),
+                  ],
+                ),
               // if (!widget.isPassenger) ...[
               //   const SizedBox(
               //     height: 8,
