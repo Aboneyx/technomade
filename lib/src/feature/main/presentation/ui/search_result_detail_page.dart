@@ -1,11 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:technomade/gen/assets.gen.dart';
 import 'package:technomade/src/core/common/constants.dart';
 import 'package:technomade/src/core/resources/resources.dart';
 import 'package:technomade/src/core/router/app_router.dart';
+import 'package:technomade/src/core/services/locator_service.dart';
+import 'package:technomade/src/core/utils/snackbar_util.dart';
 import 'package:technomade/src/feature/auth/presentation/widgets/custom_button.dart';
+import 'package:technomade/src/feature/main/bloc/calculate_cost_cubit.dart';
 import 'package:technomade/src/feature/main/model/route_dto.dart';
 import 'package:technomade/src/feature/main/model/route_station_dto.dart';
 import 'package:technomade/src/feature/main/presentation/widgets/book_stop_card.dart';
@@ -13,17 +17,25 @@ import 'package:technomade/src/feature/main/presentation/widgets/person_info_wid
 import 'package:timelines/timelines.dart';
 
 @RoutePage()
-class SearchResultDetailPage extends StatefulWidget {
+class SearchResultDetailPage extends StatefulWidget implements AutoRouteWrapper {
   final RouteDTO route;
   const SearchResultDetailPage({super.key, required this.route});
 
   @override
   State<SearchResultDetailPage> createState() => _SearchResultDetailPageState();
+
+  @override
+  Widget wrappedRoute(BuildContext context) {
+    return BlocProvider(
+      create: (context) => CalculateCostCubit(repository: DI()),
+      child: this,
+    );
+  }
 }
 
 class _SearchResultDetailPageState extends State<SearchResultDetailPage> {
   RouteStationDTO? startStation;
-  RouteStationDTO? stopStation;
+  RouteStationDTO? finishStation;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,7 +132,7 @@ class _SearchResultDetailPageState extends State<SearchResultDetailPage> {
                     indicatorBuilder: (_, index) {
                       return DotIndicator(
                         color: startStation == widget.route.routeStations![index] ||
-                                stopStation == widget.route.routeStations![index]
+                                finishStation == widget.route.routeStations![index]
                             ? Colors.green
                             : null,
                       );
@@ -132,20 +144,27 @@ class _SearchResultDetailPageState extends State<SearchResultDetailPage> {
                       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8).copyWith(right: 0),
                       child: BookStopCard(
                         isSelected: startStation == widget.route.routeStations![index] ||
-                            stopStation == widget.route.routeStations![index],
+                            finishStation == widget.route.routeStations![index],
                         onTap: () {
                           if (startStation == widget.route.routeStations![index]) {
                             startStation = null;
                             setState(() {});
                             return;
                           }
-                          if (stopStation == widget.route.routeStations![index]) {
-                            stopStation = null;
+                          if (finishStation == widget.route.routeStations![index]) {
+                            finishStation = null;
                             setState(() {});
                             return;
                           }
                           if (startStation != null) {
-                            stopStation = widget.route.routeStations![index];
+                            finishStation = widget.route.routeStations![index];
+                            if (widget.route.id != null) {
+                              BlocProvider.of<CalculateCostCubit>(context).calculateCost(
+                                routeId: widget.route.id!,
+                                startStop: startStation!.station?.name ?? '',
+                                finishStop: finishStation?.station?.name ?? '',
+                              );
+                            }
                           } else {
                             startStation = widget.route.routeStations![index];
                           }
@@ -174,18 +193,33 @@ class _SearchResultDetailPageState extends State<SearchResultDetailPage> {
           const SizedBox(
             height: 8,
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'Total',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
-                Text(
-                  '30 000 ₸',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                BlocConsumer<CalculateCostCubit, CalculateCostState>(
+                  listener: (context, state) {
+                    state.maybeWhen(
+                      errorState: (message) {
+                        SnackBarUtil.showErrorTopShortToast(context, message);
+                      },
+                      orElse: () {},
+                    );
+                  },
+                  builder: (context, state) {
+                    return Text(
+                      state.maybeWhen(
+                        loadedState: (cost) => '${cost.toStringAsFixed(0)} ₸',
+                        orElse: () => ' - ',
+                      ),
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    );
+                  },
                 ),
               ],
             ),

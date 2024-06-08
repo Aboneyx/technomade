@@ -19,4 +19,5 @@ mixin BackendEndpointCollection {
 
   /// COMMON
   static const String STATION_LIST = '/common/station/list';
+  static const String COST_CALCULATE = '/book/cost';
 }

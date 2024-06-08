@@ -20,6 +20,12 @@ abstract class IMainRepository {
 
   /// Common API
   Future<Either<String, List<StationDTO>>> getStationList();
+
+  Future<Either<String, double>> calculateCost({
+    required int routeId,
+    required String startStop,
+    required String finishStop,
+  });
 }
 
 class MainRepositoryImpl implements IMainRepository {
@@ -50,4 +56,12 @@ class MainRepositoryImpl implements IMainRepository {
     String? date,
   }) async =>
       _remoteDS.searchPassengerRoute(from: from, to: to, date: date);
+
+  @override
+  Future<Either<String, double>> calculateCost({
+    required int routeId,
+    required String startStop,
+    required String finishStop,
+  }) async =>
+      _remoteDS.calculateCost(routeId: routeId, startStop: startStop, finishStop: finishStop);
 }

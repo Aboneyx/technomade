@@ -23,6 +23,12 @@ abstract class IMainRemoteDS {
 
   /// Common API
   Future<Either<String, List<StationDTO>>> getStationList();
+
+  Future<Either<String, double>> calculateCost({
+    required int routeId,
+    required String startStop,
+    required String finishStop,
+  });
 }
 
 class MainRemoteDSImpl with NetworkHelper implements IMainRemoteDS {
@@ -160,6 +166,46 @@ class MainRemoteDSImpl with NetworkHelper implements IMainRemoteDS {
         e,
         stackTrace: stackTrace,
         hint: '${BackendEndpointCollection.LOGIN} => $parseError',
+      );
+
+      return Left(parseError);
+    } on Object catch (e, stackTrace) {
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: 'Object error => $e',
+      );
+
+      return Left('Object Error: $e');
+    }
+  }
+
+  @override
+  Future<Either<String, double>> calculateCost({
+    required int routeId,
+    required String startStop,
+    required String finishStop,
+  }) async {
+    try {
+      final dioResponse = await dio.get(
+        BackendEndpointCollection.COST_CALCULATE,
+        queryParameters: {
+          'routeId': routeId,
+          'startStop': startStop,
+          'finishStop': finishStop,
+        },
+      );
+
+      final mapResponse = dioResponse.data as double;
+
+      return Right(mapResponse);
+    } on DioException catch (e, stackTrace) {
+      final parseError = pasreDioException(e);
+
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: '${BackendEndpointCollection.COST_CALCULATE} => $parseError',
       );
 
       return Left(parseError);
