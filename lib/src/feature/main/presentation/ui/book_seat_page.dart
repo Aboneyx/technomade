@@ -5,10 +5,22 @@ import 'package:technomade/gen/assets.gen.dart';
 import 'package:technomade/src/core/resources/resources.dart';
 import 'package:technomade/src/core/router/app_router.dart';
 import 'package:technomade/src/feature/auth/presentation/widgets/custom_button.dart';
+import 'package:technomade/src/feature/main/model/route_station_dto.dart';
+import 'package:technomade/src/feature/main/presentation/main_presentation.dart';
 
 @RoutePage()
 class BookSeatPage extends StatefulWidget {
-  const BookSeatPage({super.key});
+  final double price;
+  final RouteDTO route;
+  final RouteStationDTO startStation;
+  final RouteStationDTO finishStation;
+  const BookSeatPage({
+    super.key,
+    required this.price,
+    required this.route,
+    required this.startStation,
+    required this.finishStation,
+  });
 
   @override
   State<BookSeatPage> createState() => _BookSeatPageState();
