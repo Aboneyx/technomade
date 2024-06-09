@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:technomade/src/feature/app/presentation/launcher.dart';
 import 'package:technomade/src/feature/auth/presentation/auth_presentation.dart';
+import 'package:technomade/src/feature/main/model/route_station_dto.dart';
 import 'package:technomade/src/feature/main/presentation/main_presentation.dart';
 
 part 'app_router.gr.dart';

@@ -239,8 +239,8 @@ class _SearchResultDetailPageState extends State<SearchResultDetailPage> {
                                 BookSeatRoute(
                                   price: cost,
                                   route: widget.route,
-                                  startStation: startStation,
-                                  finishStation: finishStation,
+                                  startStation: startStation!,
+                                  finishStation: finishStation!,
                                 ),
                               );
                             },
