@@ -182,67 +182,80 @@ class _SearchResultDetailPageState extends State<SearchResultDetailPage> {
           ],
         ),
       ),
-      bottomSheet: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Divider(
-            thickness: 1,
-            height: 0,
-            color: Colors.black,
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Total',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                ),
-                BlocConsumer<CalculateCostCubit, CalculateCostState>(
-                  listener: (context, state) {
-                    state.maybeWhen(
-                      errorState: (message) {
-                        SnackBarUtil.showErrorTopShortToast(context, message);
-                      },
-                      orElse: () {},
-                    );
-                  },
-                  builder: (context, state) {
-                    return Text(
+      bottomSheet: BlocConsumer<CalculateCostCubit, CalculateCostState>(
+        listener: (context, state) {
+          state.maybeWhen(
+            errorState: (message) {
+              SnackBarUtil.showErrorTopShortToast(context, message);
+            },
+            orElse: () {},
+          );
+        },
+        builder: (context, state) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Divider(
+                thickness: 1,
+                height: 0,
+                color: Colors.black,
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Total',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    ),
+                    Text(
                       state.maybeWhen(
                         loadedState: (cost) => '${cost.toStringAsFixed(0)} ₸',
                         orElse: () => ' - ',
                       ),
                       style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                    );
-                  },
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: CustomButton(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              height: 36,
-              text: 'Book',
-              onTap: () {
-                context.router.push(const BookSeatRoute());
-              },
-              textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
-            ),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).viewPadding.bottom,
-          ),
-        ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: CustomButton(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  height: 36,
+                  text: 'Book',
+                  onTap: startStation != null && finishStation != null
+                      ? () {
+                          state.whenOrNull(
+                            loadedState: (cost) {
+                              context.router.push(
+                                BookSeatRoute(
+                                  price: cost,
+                                  route: widget.route,
+                                  startStation: startStation,
+                                  finishStation: finishStation,
+                                ),
+                              );
+                            },
+                          );
+                        }
+                      : null,
+                  textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).viewPadding.bottom,
+              ),
+            ],
+          );
+        },
       ),
     );
   }
