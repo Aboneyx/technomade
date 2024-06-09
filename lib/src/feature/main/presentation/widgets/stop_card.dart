@@ -6,7 +6,7 @@ import 'package:technomade/src/core/resources/resources.dart';
 import 'package:technomade/src/feature/main/model/payload/stops_payload.dart';
 
 class StopCard extends StatelessWidget {
-  final Function()? onDeleteTap;
+  final void Function()? onDeleteTap;
   final StopsPayload? stopsPayload;
   const StopCard({super.key, this.onDeleteTap, this.stopsPayload});
 

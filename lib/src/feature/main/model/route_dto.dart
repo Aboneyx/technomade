@@ -19,3 +19,19 @@ class RouteDTO with _$RouteDTO {
 
   factory RouteDTO.fromJson(Map<String, dynamic> json) => _$RouteDTOFromJson(json);
 }
+
+extension RouteStationExtension on RouteDTO {
+  // RouteStationDTO? getFirst
+
+  String getFirstAndStationNames() {
+    if (routeStations != null && routeStations!.isNotEmpty) {
+      final String first =
+          routeStations!.first.station?.name != null ? '${routeStations!.first.station?.name!} - ' : '';
+      final String last = routeStations!.last.station?.name != null ? '${routeStations!.last.station?.name!}' : '';
+
+      return '$first$last';
+    } else {
+      return '';
+    }
+  }
+}
