@@ -5,6 +5,7 @@ import 'package:technomade/gen/assets.gen.dart';
 import 'package:technomade/src/core/extension/double_extension.dart';
 import 'package:technomade/src/core/resources/resources.dart';
 import 'package:technomade/src/core/router/app_router.dart';
+import 'package:technomade/src/core/utils/snackbar_util.dart';
 import 'package:technomade/src/feature/auth/presentation/widgets/custom_button.dart';
 import 'package:technomade/src/feature/main/model/route_dto.dart';
 import 'package:technomade/src/feature/main/presentation/widgets/stop_card.dart';
@@ -144,7 +145,16 @@ class _DriverRouteDetailPageState extends State<DriverRouteDetailPage> {
                 text: 'Scan',
                 textStyle: const TextStyle(fontWeight: FontWeight.w600, color: Colors.white),
                 onTap: () {
-                  context.router.push(const ScanTicketRoute());
+                  if (widget.route.id == null) {
+                    SnackBarUtil.showErrorTopShortToast(context, 'Route Id is null!');
+                    return;
+                  }
+
+                  context.router.push(
+                    ScanTicketRoute(
+                      routeId: widget.route.id!,
+                    ),
+                  );
                 },
               ),
             ),

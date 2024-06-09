@@ -12,6 +12,7 @@ mixin BackendEndpointCollection {
   /// DRIVER
   static const String DRIVER_ROUTES = '/driver/route';
   static const String DRIVER_ROUTE_CREATE = '/driver/route/create';
+  static const String CHECK_TICKET = '/ticket/check';
 
   /// PASSENGER
 

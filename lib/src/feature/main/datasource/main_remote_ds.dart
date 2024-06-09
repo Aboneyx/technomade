@@ -21,6 +21,11 @@ abstract class IMainRemoteDS {
     required List<StopsPayload> stops,
   });
 
+  Future<Either<String, String>> checkTicket({
+    required String ticketUuid,
+    required int routeId,
+  });
+
   /// Passenger API part
   Future<Either<String, List<RouteDTO>>> searchPassengerRoute({
     required String from,
@@ -242,6 +247,42 @@ class MainRemoteDSImpl with NetworkHelper implements IMainRemoteDS {
       );
 
       return const Right('Successfully create route!');
+    } on DioException catch (e, stackTrace) {
+      final parseError = pasreDioException(e);
+
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: '${BackendEndpointCollection.DRIVER_ROUTE_CREATE} => $parseError',
+      );
+
+      return Left(parseError);
+    } on Object catch (e, stackTrace) {
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: 'Object error => $e',
+      );
+
+      return Left('Object Error: $e');
+    }
+  }
+
+  @override
+  Future<Either<String, String>> checkTicket({
+    required String ticketUuid,
+    required int routeId,
+  }) async {
+    try {
+      await dio.get(
+        BackendEndpointCollection.CHECK_TICKET,
+        queryParameters: {
+          'ticketUuid': ticketUuid,
+          'routeId': routeId,
+        },
+      );
+
+      return const Right('Checked sucsessfull!');
     } on DioException catch (e, stackTrace) {
       final parseError = pasreDioException(e);
 

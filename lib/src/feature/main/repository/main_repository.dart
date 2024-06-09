@@ -17,6 +17,11 @@ abstract class IMainRepository {
     required List<StopsPayload> stops,
   });
 
+  Future<Either<String, String>> checkTicket({
+    required String ticketUuid,
+    required int routeId,
+  });
+
   /// Passenger API part
   Future<Either<String, List<RouteDTO>>> searchPassengerRoute({
     required String from,
@@ -79,5 +84,15 @@ class MainRepositoryImpl implements IMainRepository {
       _remoteDS.createRoute(
         description: description,
         stops: stops,
+      );
+
+  @override
+  Future<Either<String, String>> checkTicket({
+    required String ticketUuid,
+    required int routeId,
+  }) async =>
+      _remoteDS.checkTicket(
+        ticketUuid: ticketUuid,
+        routeId: routeId,
       );
 }
