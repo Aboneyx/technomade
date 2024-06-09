@@ -9,6 +9,7 @@ import 'package:technomade/src/core/utils/snackbar_util.dart';
 import 'package:technomade/src/core/utils/validator_util.dart';
 import 'package:technomade/src/feature/app/bloc/app_bloc.dart';
 import 'package:technomade/src/feature/app/widgets/custom_overlay_widget.dart';
+import 'package:technomade/src/feature/app/widgets/scroll_wrapper.dart';
 import 'package:technomade/src/feature/auth/bloc/login_cubit.dart';
 import 'package:technomade/src/feature/auth/presentation/widgets/custom_button.dart';
 import 'package:technomade/src/feature/auth/presentation/widgets/custom_text_field.dart';
@@ -69,87 +70,89 @@ class _AuthPageState extends State<AuthPage> {
             body: SafeArea(
               child: Form(
                 key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Spacer(),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24),
-                        color: AppColors.grey,
-                      ),
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 31),
-                      child: Column(
-                        children: [
-                          if (isDriver)
+                child: ScrollWrapper(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Spacer(),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(24),
+                          color: AppColors.grey,
+                        ),
+                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 31),
+                        child: Column(
+                          children: [
+                            if (isDriver)
+                              const SizedBox(
+                                height: 30,
+                              )
+                            else
+                              const Text(
+                                'Sign in via passenger',
+                                style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700, color: AppColors.mainColor),
+                              ),
                             const SizedBox(
-                              height: 30,
-                            )
-                          else
-                            const Text(
-                              'Sign in via passenger',
-                              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700, color: AppColors.mainColor),
+                              height: 24,
                             ),
-                          const SizedBox(
-                            height: 24,
-                          ),
-                          CustomTextField(
-                            hintText: 'Username',
-                            validator: (v) => ValidatorUtil.defaultValidator(context, v),
-                            controller: usernameController,
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          CustomTextField(
-                            hintText: 'Password',
-                            obscureText: true,
-                            validator: (v) => ValidatorUtil.defaultValidator(context, v),
-                            controller: passwordController,
-                          ),
-                          const SizedBox(
-                            height: 24,
-                          ),
-                          CustomButton(
-                            text: 'Log in',
-                            onTap: () {
-                              if (_formKey.currentState!.validate()) {
-                                BlocProvider.of<LoginCubit>(context).login(
-                                  username: usernameController.text,
-                                  password: passwordController.text,
-                                );
-                              }
-                            },
-                          ),
-                          const SizedBox(
-                            height: 24,
-                          ),
-                          CustomButton(
-                            text: 'Register',
-                            onTap: () {
-                              context.router.push(SignUpRoute(isDriver: isDriver));
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Spacer(),
-                    InkWell(
-                      borderRadius: BorderRadius.circular(8),
-                      onTap: () {
-                        isDriver = !isDriver;
-                        setState(() {});
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          isDriver ? 'are you a passenger?' : 'are you a driver?',
-                          style: const TextStyle(fontSize: 15, color: AppColors.mainColor),
+                            CustomTextField(
+                              hintText: 'Username',
+                              validator: (v) => ValidatorUtil.defaultValidator(context, v),
+                              controller: usernameController,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            CustomTextField(
+                              hintText: 'Password',
+                              obscureText: true,
+                              validator: (v) => ValidatorUtil.defaultValidator(context, v),
+                              controller: passwordController,
+                            ),
+                            const SizedBox(
+                              height: 24,
+                            ),
+                            CustomButton(
+                              text: 'Log in',
+                              onTap: () {
+                                if (_formKey.currentState!.validate()) {
+                                  BlocProvider.of<LoginCubit>(context).login(
+                                    username: usernameController.text,
+                                    password: passwordController.text,
+                                  );
+                                }
+                              },
+                            ),
+                            const SizedBox(
+                              height: 24,
+                            ),
+                            CustomButton(
+                              text: 'Register',
+                              onTap: () {
+                                context.router.push(SignUpRoute(isDriver: isDriver));
+                              },
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  ],
+                      const Spacer(),
+                      InkWell(
+                        borderRadius: BorderRadius.circular(8),
+                        onTap: () {
+                          isDriver = !isDriver;
+                          setState(() {});
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            isDriver ? 'are you a passenger?' : 'are you a driver?',
+                            style: const TextStyle(fontSize: 15, color: AppColors.mainColor),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
