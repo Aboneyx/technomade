@@ -1,8 +1,10 @@
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:technomade/src/core/enum/environment.dart';
 import 'package:technomade/src/core/network/network_helper.dart';
 import 'package:technomade/src/core/utils/error_util.dart';
+import 'package:technomade/src/feature/main/model/payload/stops_payload.dart';
 import 'package:technomade/src/feature/main/model/route_dto.dart';
 import 'package:technomade/src/feature/main/model/station_dto.dart';
 
@@ -12,6 +14,11 @@ abstract class IMainRemoteDS {
 
   Future<Either<String, RouteDTO>> getDriverRouteById({
     required int routeId,
+  });
+
+  Future<Either<String, String>> createRoute({
+    required String description,
+    required List<StopsPayload> stops,
   });
 
   /// Passenger API part
@@ -48,7 +55,7 @@ class MainRemoteDSImpl with NetworkHelper implements IMainRemoteDS {
       ErrorUtil.logError(
         e,
         stackTrace: stackTrace,
-        hint: '${BackendEndpointCollection.LOGIN} => $parseError',
+        hint: '${BackendEndpointCollection.DRIVER_ROUTES} => $parseError',
       );
 
       return Left(parseError);
@@ -81,7 +88,7 @@ class MainRemoteDSImpl with NetworkHelper implements IMainRemoteDS {
       ErrorUtil.logError(
         e,
         stackTrace: stackTrace,
-        hint: '${BackendEndpointCollection.LOGIN} => $parseError',
+        hint: '${BackendEndpointCollection.STATION_LIST} => $parseError',
       );
 
       return Left(parseError);
@@ -117,7 +124,7 @@ class MainRemoteDSImpl with NetworkHelper implements IMainRemoteDS {
       ErrorUtil.logError(
         e,
         stackTrace: stackTrace,
-        hint: '${BackendEndpointCollection.LOGIN} => $parseError',
+        hint: '${BackendEndpointCollection.DRIVER_ROUTES} => $parseError',
       );
 
       return Left(parseError);
@@ -160,6 +167,42 @@ class MainRemoteDSImpl with NetworkHelper implements IMainRemoteDS {
         e,
         stackTrace: stackTrace,
         hint: '${BackendEndpointCollection.LOGIN} => $parseError',
+      );
+
+      return Left(parseError);
+    } on Object catch (e, stackTrace) {
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: 'Object error => $e',
+      );
+
+      return Left('Object Error: $e');
+    }
+  }
+
+  @override
+  Future<Either<String, String>> createRoute({
+    required String description,
+    required List<StopsPayload> stops,
+  }) async {
+    try {
+      await dio.post(
+        BackendEndpointCollection.DRIVER_ROUTE_CREATE,
+        data: {
+          'description': description,
+          'stops': stops.mapIndexed((index, element) => element.toJson()).toList(),
+        },
+      );
+
+      return const Right('Successfully create route!');
+    } on DioException catch (e, stackTrace) {
+      final parseError = pasreDioException(e);
+
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: '${BackendEndpointCollection.DRIVER_ROUTE_CREATE} => $parseError',
       );
 
       return Left(parseError);
