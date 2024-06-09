@@ -2,11 +2,16 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:technomade/gen/assets.gen.dart';
 import 'package:technomade/src/core/resources/resources.dart';
+import 'package:technomade/src/core/services/locator_service.dart';
+import 'package:technomade/src/core/utils/snackbar_util.dart';
+import 'package:technomade/src/feature/app/widgets/custom_overlay_widget.dart';
 import 'package:technomade/src/feature/auth/presentation/widgets/custom_button.dart';
 import 'package:technomade/src/feature/auth/presentation/widgets/custom_text_field.dart';
+import 'package:technomade/src/feature/main/bloc/create_route_second_cubit.dart';
 import 'package:technomade/src/feature/main/presentation/vmodel/create_route_vmodel.dart';
 import 'package:technomade/src/feature/main/presentation/widgets/add_stop_bottom_sheet.dart';
 import 'package:technomade/src/feature/main/presentation/widgets/stop_card.dart';
@@ -27,6 +32,11 @@ class CreateRouteSecondPage extends StatefulWidget implements AutoRouteWrapper {
     return MultiBlocProvider(
       providers: [
         ChangeNotifierProvider.value(value: createRouteVmodel),
+        BlocProvider(
+          create: (context) => CreateRouteSecondCubit(
+            repository: DI(),
+          ),
+        ),
       ],
       child: this,
     );
@@ -44,114 +54,155 @@ class _CreateRouteSecondPageState extends State<CreateRouteSecondPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CreateRouteVmodel>(
-      builder: (context, v, c) {
-        return Scaffold(
-          appBar: AppBar(
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                splashRadius: 24,
-                constraints: const BoxConstraints(maxHeight: 24, maxWidth: 24),
-                onPressed: () {
-                  context.router.maybePop();
+    return LoaderOverlay(
+      overlayColor: Colors.black.withOpacity(0.5),
+      useDefaultLoading: false,
+      overlayWidgetBuilder: (progress) => const CustomOverlayWidget(),
+      child: Consumer<CreateRouteVmodel>(
+        builder: (context, v, c) {
+          return BlocConsumer<CreateRouteSecondCubit, CreateRouteSecondState>(
+            listener: (context, state) {
+              state.maybeWhen(
+                loadingState: () {
+                  context.loaderOverlay.show();
                 },
-                icon: SvgPicture.asset(Assets.icons.arrowLeftDropCircleOutline),
-              ),
-            ),
-            leadingWidth: 48,
-            title: const Text(
-              'Creating a route',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-            ),
-            titleSpacing: 8,
-            centerTitle: false,
-          ),
-          body: SafeArea(
-            child: CustomScrollView(
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              slivers: [
-                SliverList.list(
-                  children: [
-                    const SizedBox(height: 24),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: CustomTextField(
-                        hintText: 'Description',
-                        controller: descriptionController,
-                        hintStyle: const TextStyle(fontSize: 16, color: Colors.black),
-                        border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          borderSide: BorderSide(color: AppColors.primaryColor300),
-                        ),
-                        maxLines: 3,
-                        onChanged: (p0) {
-                          v.description = p0;
-                        },
-                      ),
+                errorState: (message) {
+                  context.loaderOverlay.hide();
+                  SnackBarUtil.showErrorTopShortToast(context, message);
+                },
+                loadedState: (message) {
+                  context.loaderOverlay.hide();
+                  SnackBarUtil.showTopShortToast(context, message: message);
+
+                  Future.delayed(
+                    const Duration(milliseconds: 200),
+                  ).whenComplete(() {
+                    v.clearAll();
+                    context.router.maybePop();
+                  });
+                },
+                orElse: () {
+                  context.loaderOverlay.hide();
+                },
+              );
+            },
+            builder: (context, state) {
+              return Scaffold(
+                appBar: AppBar(
+                  leading: Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      splashRadius: 24,
+                      constraints: const BoxConstraints(maxHeight: 24, maxWidth: 24),
+                      onPressed: () {
+                        context.router.maybePop();
+                      },
+                      icon: SvgPicture.asset(Assets.icons.arrowLeftDropCircleOutline),
                     ),
-                    const SizedBox(height: 18),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ),
+                  leadingWidth: 48,
+                  title: const Text(
+                    'Creating a route',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                  ),
+                  titleSpacing: 8,
+                  centerTitle: false,
+                ),
+                body: SafeArea(
+                  child: CustomScrollView(
+                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                    slivers: [
+                      SliverList.list(
                         children: [
-                          const Text(
-                            'Route config',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                          const SizedBox(height: 24),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: CustomTextField(
+                              hintText: 'Description',
+                              controller: descriptionController,
+                              hintStyle: const TextStyle(fontSize: 16, color: Colors.black),
+                              border: const OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(8)),
+                                borderSide: BorderSide(color: AppColors.primaryColor300),
+                              ),
+                              maxLines: 3,
+                              onChanged: (p0) {
+                                v.description = p0;
+                              },
+                            ),
                           ),
-                          IconButton(
-                            padding: EdgeInsets.zero,
-                            splashRadius: 20,
-                            constraints: const BoxConstraints(maxHeight: 24, maxWidth: 24),
-                            onPressed: () {
-                              AddStopBottomSheet.show(
-                                context,
-                                createRouteVmodel: Provider.of<CreateRouteVmodel>(context, listen: false),
-                              );
-                            },
-                            icon: const Icon(Icons.add),
+                          const SizedBox(height: 18),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  'Route config',
+                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                                ),
+                                IconButton(
+                                  padding: EdgeInsets.zero,
+                                  splashRadius: 20,
+                                  constraints: const BoxConstraints(maxHeight: 24, maxWidth: 24),
+                                  onPressed: () {
+                                    AddStopBottomSheet.show(
+                                      context,
+                                      createRouteVmodel: Provider.of<CreateRouteVmodel>(context, listen: false),
+                                    );
+                                  },
+                                  icon: const Icon(Icons.add),
+                                ),
+                              ],
+                            ),
                           ),
+                          const SizedBox(height: 8),
                         ],
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  sliver: SliverList.separated(
-                    itemBuilder: (context, index) => StopCard(
-                      onDeleteTap: () {
-                        v.removeStops(v.stops[index]);
-                      },
-                      stopsPayload: v.stops[index],
-                    ),
-                    separatorBuilder: (context, index) => const SizedBox(
-                      height: 8,
-                    ),
-                    itemCount: v.stops.length,
+                      SliverPadding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        sliver: SliverList.separated(
+                          itemBuilder: (context, index) => StopCard(
+                            onDeleteTap: () {
+                              v.removeStops(v.stops[index]);
+                            },
+                            stopsPayload: v.stops[index],
+                          ),
+                          separatorBuilder: (context, index) => const SizedBox(
+                            height: 8,
+                          ),
+                          itemCount: v.stops.length,
+                        ),
+                      ),
+                      const SliverToBoxAdapter(
+                        child: SizedBox(height: 100),
+                      ),
+                    ],
                   ),
                 ),
-                const SliverToBoxAdapter(
-                  child: SizedBox(height: 100),
+                floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+                floatingActionButton: Padding(
+                  padding: const EdgeInsets.all(16.0).copyWith(top: 8),
+                  child: CustomElevatedButton(
+                    text: 'Create',
+                    onPressed: v.stops.length > 1 && v.description != null && v.description!.isNotEmpty
+                        ? () {
+                            BlocProvider.of<CreateRouteSecondCubit>(context).createRoute(
+                              description: v.description!,
+                              stops: v.stops,
+                            );
+                          }
+                        : null,
+                    style: CustomElevatedButtonStyles.primaryButtonStyle(context),
+                    child: null,
+                  ),
                 ),
-              ],
-            ),
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: Padding(
-            padding: const EdgeInsets.all(16.0).copyWith(top: 8),
-            child: CustomElevatedButton(
-              text: 'Create',
-              onPressed: v.stops.length > 1 && v.description != null && v.description!.isNotEmpty ? () {} : null,
-              style: CustomElevatedButtonStyles.primaryButtonStyle(context),
-              child: null,
-            ),
-          ),
-        );
-      },
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

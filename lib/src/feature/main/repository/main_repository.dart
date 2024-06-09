@@ -1,5 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:technomade/src/feature/main/datasource/main_remote_ds.dart';
+import 'package:technomade/src/feature/main/model/payload/stops_payload.dart';
 import 'package:technomade/src/feature/main/model/route_dto.dart';
 import 'package:technomade/src/feature/main/model/station_dto.dart';
 
@@ -9,6 +10,11 @@ abstract class IMainRepository {
 
   Future<Either<String, RouteDTO>> getDriverRouteById({
     required int routeId,
+  });
+
+  Future<Either<String, String>> createRoute({
+    required String description,
+    required List<StopsPayload> stops,
   });
 
   /// Passenger API part
@@ -64,4 +70,14 @@ class MainRepositoryImpl implements IMainRepository {
     required String finishStop,
   }) async =>
       _remoteDS.calculateCost(routeId: routeId, startStop: startStop, finishStop: finishStop);
+
+  @override
+  Future<Either<String, String>> createRoute({
+    required String description,
+    required List<StopsPayload> stops,
+  }) async =>
+      _remoteDS.createRoute(
+        description: description,
+        stops: stops,
+      );
 }

@@ -14,9 +14,9 @@ class BookStopCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: isSelected ? Colors.green : null,
+        // color: isSelected ? Colors.green : null,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.labelColorLightSecondary),
+        border: Border.all(color: isSelected ? Colors.green : AppColors.labelColorLightSecondary),
       ),
       child: Material(
         borderRadius: BorderRadius.circular(8),

@@ -6,24 +6,24 @@ import 'package:technomade/src/core/common/constants.dart';
 import 'package:technomade/src/feature/main/model/route_dto.dart';
 import 'package:timelines/timelines.dart';
 
-class MainRouteCard extends StatefulWidget {
-  final bool isPassenger;
+class MainDriverRouteCard extends StatefulWidget {
+  final bool showExpandablePart;
   final bool hasTimeline;
   final Function()? onTap;
   final RouteDTO? route;
-  const MainRouteCard({
+  const MainDriverRouteCard({
     super.key,
-    this.isPassenger = false,
+    this.showExpandablePart = false,
     this.hasTimeline = true,
     this.onTap,
     this.route,
   });
 
   @override
-  State<MainRouteCard> createState() => _MainRouteCardState();
+  State<MainDriverRouteCard> createState() => _MainDriverRouteCardState();
 }
 
-class _MainRouteCardState extends State<MainRouteCard> {
+class _MainDriverRouteCardState extends State<MainDriverRouteCard> {
   bool isExpanded = false;
   DateTime? departureTime;
   DateTime? arrivalTime;
@@ -61,7 +61,7 @@ class _MainRouteCardState extends State<MainRouteCard> {
                         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                       ),
                     ),
-                  if (!widget.isPassenger && widget.hasTimeline)
+                  if (widget.showExpandablePart && widget.hasTimeline)
                     IconButton(
                       padding: EdgeInsets.zero,
                       splashRadius: 24,
@@ -81,7 +81,7 @@ class _MainRouteCardState extends State<MainRouteCard> {
                     ),
                 ],
               ),
-              if (isExpanded && !widget.isPassenger)
+              if (isExpanded && widget.showExpandablePart)
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: FixedTimeline.tileBuilder(
@@ -155,15 +155,6 @@ class _MainRouteCardState extends State<MainRouteCard> {
                     Text('${arrivalTime!.difference(departureTime!).inHours} hours on the road'),
                   ],
                 ),
-              // if (!widget.isPassenger) ...[
-              //   const SizedBox(
-              //     height: 8,
-              //   ),
-              //   const Text(
-              //     '10 000 ₸',
-              //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-              //   ),
-              // ],
             ],
           ),
         ),
