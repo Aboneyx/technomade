@@ -143,10 +143,10 @@ class _BookSeatPageState extends State<BookSeatPage> {
               height: 10,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 16),
               child: CustomButton(
                 padding: const EdgeInsets.symmetric(vertical: 8),
-                height: 36,
+                height: 40,
                 text: 'Book',
                 onTap: selectedIndex != null
                     ? () {

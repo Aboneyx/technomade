@@ -163,7 +163,6 @@ class _PassengerTicketDetailPageState extends State<PassengerTicketDetailPage> {
                             );
                           },
                         ),
-                        const Spacer(),
                         const SizedBox(
                           height: 8,
                         ),
@@ -180,7 +179,7 @@ class _PassengerTicketDetailPageState extends State<PassengerTicketDetailPage> {
                     children: [
                       Expanded(
                         child: CustomButton(
-                          height: 34,
+                          height: 40,
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           bgColor: Colors.white,
                           border: Border.all(color: AppColors.mainColor),
@@ -204,7 +203,7 @@ class _PassengerTicketDetailPageState extends State<PassengerTicketDetailPage> {
                       ),
                       Expanded(
                         child: CustomButton(
-                          height: 34,
+                          height: 40,
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           text: 'Show qr',
                           textStyle: const TextStyle(fontWeight: FontWeight.w600, color: Colors.white),

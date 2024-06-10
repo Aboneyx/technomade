@@ -150,7 +150,7 @@ class _BookInfoPageState extends State<BookInfoPage> {
               },
               builder: (context, state) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 16),
                   child: CustomButton(
                     onTap: () {
                       if (widget.route.id != null &&
@@ -165,7 +165,7 @@ class _BookInfoPageState extends State<BookInfoPage> {
                       }
                     },
                     padding: const EdgeInsets.symmetric(vertical: 8),
-                    height: 36,
+                    height: 40,
                     text: 'Book',
                     textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
                     child: state.maybeWhen(
