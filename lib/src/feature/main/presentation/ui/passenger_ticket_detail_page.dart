@@ -183,7 +183,7 @@ class _PassengerTicketDetailPageState extends State<PassengerTicketDetailPage> {
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           bgColor: Colors.white,
                           border: Border.all(color: AppColors.mainColor),
-                          text: 'Rotes',
+                          text: 'Routes',
                           textStyle: const TextStyle(color: AppColors.mainColor, fontWeight: FontWeight.w600),
                           onTap: () {
                             state.whenOrNull(
