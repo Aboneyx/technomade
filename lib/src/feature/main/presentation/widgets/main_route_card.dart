@@ -3,7 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:technomade/gen/assets.gen.dart';
 import 'package:technomade/src/core/common/constants.dart';
+import 'package:technomade/src/core/extension/integer_extension.dart';
 import 'package:technomade/src/feature/main/model/route_dto.dart';
+import 'package:technomade/src/feature/main/model/route_station_dto.dart';
 import 'package:timelines/timelines.dart';
 
 class MainRouteCard extends StatefulWidget {
@@ -11,12 +13,18 @@ class MainRouteCard extends StatefulWidget {
   final bool hasTimeline;
   final Function()? onTap;
   final RouteDTO? route;
+  final RouteStationDTO? fromStation;
+  final RouteStationDTO? toStation;
+  final double? ticketCost;
   const MainRouteCard({
     super.key,
     this.isPassenger = false,
     this.hasTimeline = true,
     this.onTap,
     this.route,
+    this.fromStation,
+    this.toStation,
+    this.ticketCost,
   });
 
   @override
@@ -81,7 +89,7 @@ class _MainRouteCardState extends State<MainRouteCard> {
                     ),
                 ],
               ),
-              if (isExpanded && !widget.isPassenger)
+              if (isExpanded && !widget.isPassenger && widget.route != null && widget.route!.routeStations != null)
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: FixedTimeline.tileBuilder(
@@ -96,12 +104,17 @@ class _MainRouteCardState extends State<MainRouteCard> {
                         return ConnectorStyle.solidLine;
                       },
                       indicatorStyleBuilder: (context, index) =>
-                          index == 0 || index == 2 ? IndicatorStyle.dot : IndicatorStyle.outlined,
+                          widget.route!.routeStations![index].id == widget.fromStation?.id ||
+                                  widget.route!.routeStations![index].id == widget.toStation?.id
+                              ? IndicatorStyle.dot
+                              : IndicatorStyle.outlined,
                       oppositeContentsBuilder: (context, index) => Padding(
                         padding: const EdgeInsets.only(right: 8),
                         child: Text(
-                          '8:30',
-                          style: (index == 0 || index == 2)
+                          DateFormat('HH:mm')
+                              .format(widget.route!.routeStations![index].departureTime ?? DateTime.now()),
+                          style: (widget.route!.routeStations![index].id == widget.fromStation?.id ||
+                                  widget.route!.routeStations![index].id == widget.toStation?.id)
                               ? const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)
                               : const TextStyle(),
                         ),
@@ -109,14 +122,15 @@ class _MainRouteCardState extends State<MainRouteCard> {
                       contentsBuilder: (context, index) => Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          'Almaty',
-                          style: (index == 0 || index == 2)
+                          widget.route!.routeStations![index].station?.name ?? '',
+                          style: (widget.route!.routeStations![index].id == widget.fromStation?.id ||
+                                  widget.route!.routeStations![index].id == widget.toStation?.id)
                               ? const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)
                               : const TextStyle(),
                         ),
                       ),
                       itemExtent: 40.0,
-                      itemCount: 3,
+                      itemCount: widget.route!.routeStations!.length,
                     ),
                   ),
                 )
@@ -155,15 +169,15 @@ class _MainRouteCardState extends State<MainRouteCard> {
                     Text('${arrivalTime!.difference(departureTime!).inHours} hours on the road'),
                   ],
                 ),
-              // if (!widget.isPassenger) ...[
-              //   const SizedBox(
-              //     height: 8,
-              //   ),
-              //   const Text(
-              //     '10 000 ₸',
-              //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-              //   ),
-              // ],
+              if (widget.ticketCost != null) ...[
+                const SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  '${widget.ticketCost!.toInt().thousandFormat()} ₸',
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                ),
+              ],
             ],
           ),
         ),

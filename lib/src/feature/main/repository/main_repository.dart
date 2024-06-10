@@ -4,6 +4,7 @@ import 'package:technomade/src/feature/main/model/payload/stops_payload.dart';
 import 'package:technomade/src/feature/main/model/place_dto.dart';
 import 'package:technomade/src/feature/main/model/route_dto.dart';
 import 'package:technomade/src/feature/main/model/station_dto.dart';
+import 'package:technomade/src/feature/main/model/ticket_dto.dart';
 
 abstract class IMainRepository {
   /// Driver API part
@@ -42,6 +43,8 @@ abstract class IMainRepository {
     required int finish,
     required int place,
   });
+
+  Future<Either<String, List<TicketDTO>>> getTickets();
 
   /// Common API
   Future<Either<String, List<StationDTO>>> getStationList();
@@ -122,4 +125,7 @@ class MainRepositoryImpl implements IMainRepository {
     required int place,
   }) =>
       _remoteDS.bookPlace(routeId: routeId, start: start, finish: finish, place: place);
+
+  @override
+  Future<Either<String, List<TicketDTO>>> getTickets() => _remoteDS.getTickets();
 }

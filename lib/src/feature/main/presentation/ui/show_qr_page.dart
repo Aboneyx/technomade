@@ -4,10 +4,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:technomade/gen/assets.gen.dart';
 import 'package:technomade/src/core/resources/resources.dart';
+import 'package:technomade/src/feature/main/model/ticket_dto.dart';
 
 @RoutePage()
 class ShowQrPage extends StatefulWidget {
-  const ShowQrPage({super.key});
+  final TicketDTO ticket;
+  const ShowQrPage({super.key, required this.ticket});
 
   @override
   State<ShowQrPage> createState() => _ShowQrPageState();
@@ -47,7 +49,7 @@ class _ShowQrPageState extends State<ShowQrPage> {
                 height: 32,
               ),
               QrImageView(
-                data: '1234567890',
+                data: '${widget.ticket.id}',
                 size: 250.0,
               ),
               const SizedBox(

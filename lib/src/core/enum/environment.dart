@@ -19,6 +19,7 @@ mixin BackendEndpointCollection {
   static const String PASSENGER_SEARCH = '/search';
   static const String PLACE_INFO = '/book/places';
   static const String BOOK_PLACE = '/book/reserve';
+  static const String TICKETS = '/tickets';
 
   /// COMMON
   static const String STATION_LIST = '/common/station/list';

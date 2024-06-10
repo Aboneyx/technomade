@@ -8,6 +8,7 @@ import 'package:technomade/src/feature/main/model/payload/stops_payload.dart';
 import 'package:technomade/src/feature/main/model/place_dto.dart';
 import 'package:technomade/src/feature/main/model/route_dto.dart';
 import 'package:technomade/src/feature/main/model/station_dto.dart';
+import 'package:technomade/src/feature/main/model/ticket_dto.dart';
 
 abstract class IMainRemoteDS {
   /// Driver API part
@@ -46,6 +47,8 @@ abstract class IMainRemoteDS {
     required int finish,
     required int place,
   });
+
+  Future<Either<String, List<TicketDTO>>> getTickets();
 
   /// Common API
   Future<Either<String, List<StationDTO>>> getStationList();
@@ -386,6 +389,39 @@ class MainRemoteDSImpl with NetworkHelper implements IMainRemoteDS {
         e,
         stackTrace: stackTrace,
         hint: '${BackendEndpointCollection.BOOK_PLACE} => $parseError',
+      );
+
+      return Left(parseError);
+    } on Object catch (e, stackTrace) {
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: 'Object error => $e',
+      );
+
+      return Left('Object Error: $e');
+    }
+  }
+
+  @override
+  Future<Either<String, List<TicketDTO>>> getTickets() async {
+    try {
+      final dioResponse = await dio.get(
+        BackendEndpointCollection.TICKETS,
+      );
+
+      final listReponse = dioResponse.data as List;
+
+      final List<TicketDTO> stations = listReponse.map((e) => TicketDTO.fromJson(e as Map<String, dynamic>)).toList();
+
+      return Right(stations);
+    } on DioException catch (e, stackTrace) {
+      final parseError = pasreDioException(e);
+
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: '${BackendEndpointCollection.TICKETS} => $parseError',
       );
 
       return Left(parseError);
