@@ -3,26 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:technomade/src/core/router/app_router.dart';
-import 'package:technomade/src/core/services/locator_service.dart';
 import 'package:technomade/src/core/utils/snackbar_util.dart';
 import 'package:technomade/src/feature/app/widgets/custom_loading_widget.dart';
 import 'package:technomade/src/feature/main/bloc/main_driver_cubit.dart';
 import 'package:technomade/src/feature/main/presentation/widgets/main_driver_route_card.dart';
 
 @RoutePage()
-class MainDriverPage extends StatefulWidget implements AutoRouteWrapper {
+class MainDriverPage extends StatefulWidget {
   const MainDriverPage({super.key});
 
   @override
   State<MainDriverPage> createState() => _MainDriverPageState();
-
-  @override
-  Widget wrappedRoute(BuildContext context) {
-    return BlocProvider(
-      create: (context) => MainDriverCubit(repository: DI()),
-      child: this,
-    );
-  }
 }
 
 class _MainDriverPageState extends State<MainDriverPage> {

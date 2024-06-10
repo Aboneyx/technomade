@@ -24,6 +24,14 @@ abstract class IMainRepository {
     required int routeId,
   });
 
+  Future<Either<String, String>> launchRoute({
+    required int routeId,
+  });
+
+  Future<Either<String, String>> changeRouteState({
+    required int routeId,
+  });
+
   /// Passenger API part
   Future<Either<String, List<RouteDTO>>> searchPassengerRoute({
     required String from,
@@ -114,8 +122,16 @@ class MainRepositoryImpl implements IMainRepository {
       );
 
   @override
-  Future<Either<String, List<PlaceDTO>>> getPlaces({required int routeId, required int start, required int finish}) =>
-      _remoteDS.getPlaces(routeId: routeId, start: start, finish: finish);
+  Future<Either<String, List<PlaceDTO>>> getPlaces({
+    required int routeId,
+    required int start,
+    required int finish,
+  }) =>
+      _remoteDS.getPlaces(
+        routeId: routeId,
+        start: start,
+        finish: finish,
+      );
 
   @override
   Future<Either<String, String>> bookPlace({
@@ -124,8 +140,29 @@ class MainRepositoryImpl implements IMainRepository {
     required int finish,
     required int place,
   }) =>
-      _remoteDS.bookPlace(routeId: routeId, start: start, finish: finish, place: place);
+      _remoteDS.bookPlace(
+        routeId: routeId,
+        start: start,
+        finish: finish,
+        place: place,
+      );
 
   @override
   Future<Either<String, List<TicketDTO>>> getTickets() => _remoteDS.getTickets();
+
+  @override
+  Future<Either<String, String>> changeRouteState({
+    required int routeId,
+  }) async =>
+      _remoteDS.changeRouteState(
+        routeId: routeId,
+      );
+
+  @override
+  Future<Either<String, String>> launchRoute({
+    required int routeId,
+  }) async =>
+      _remoteDS.launchRoute(
+        routeId: routeId,
+      );
 }

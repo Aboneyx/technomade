@@ -133,7 +133,15 @@ class _DriverRouteDetailPageState extends State<DriverRouteDetailPage> {
                 text: 'Monitoring',
                 textStyle: const TextStyle(color: AppColors.mainColor, fontWeight: FontWeight.w600),
                 onTap: () {
-                  context.router.push(const MonitoringDriverRoute());
+                  if (widget.route.id == null) {
+                    SnackBarUtil.showErrorTopShortToast(context, 'Route Id is null!');
+                    return;
+                  }
+                  context.router.push(
+                    MonitoringDriverRoute(
+                      route: widget.route,
+                    ),
+                  );
                 },
               ),
             ),

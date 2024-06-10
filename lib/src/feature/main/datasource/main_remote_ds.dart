@@ -28,6 +28,14 @@ abstract class IMainRemoteDS {
     required int routeId,
   });
 
+  Future<Either<String, String>> launchRoute({
+    required int routeId,
+  });
+
+  Future<Either<String, String>> changeRouteState({
+    required int routeId,
+  });
+
   /// Passenger API part
   Future<Either<String, List<RouteDTO>>> searchPassengerRoute({
     required String from,
@@ -422,6 +430,80 @@ class MainRemoteDSImpl with NetworkHelper implements IMainRemoteDS {
         e,
         stackTrace: stackTrace,
         hint: '${BackendEndpointCollection.TICKETS} => $parseError',
+      );
+
+      return Left(parseError);
+    } on Object catch (e, stackTrace) {
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: 'Object error => $e',
+      );
+
+      return Left('Object Error: $e');
+    }
+  }
+
+  @override
+  Future<Either<String, String>> changeRouteState({
+    required int routeId,
+  }) async {
+    try {
+      await dio.post(
+        BackendEndpointCollection.CHANGE_ROUTE_STATE,
+        queryParameters: {
+          'routeId': routeId,
+        },
+        data: {
+          'routeId': routeId,
+        },
+      );
+
+      return const Right('Route State Changed Successfully!');
+    } on DioException catch (e, stackTrace) {
+      final parseError = pasreDioException(e);
+
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: '${BackendEndpointCollection.CHANGE_ROUTE_STATE} => $parseError',
+      );
+
+      return Left(parseError);
+    } on Object catch (e, stackTrace) {
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: 'Object error => $e',
+      );
+
+      return Left('Object Error: $e');
+    }
+  }
+
+  @override
+  Future<Either<String, String>> launchRoute({
+    required int routeId,
+  }) async {
+    try {
+      await dio.post(
+        BackendEndpointCollection.LAUNCH_ROUTE,
+        queryParameters: {
+          'routeId': routeId,
+        },
+        data: {
+          'routeId': routeId,
+        },
+      );
+
+      return const Right('Route Launched Successfully!');
+    } on DioException catch (e, stackTrace) {
+      final parseError = pasreDioException(e);
+
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: '${BackendEndpointCollection.LAUNCH_ROUTE} => $parseError',
       );
 
       return Left(parseError);

@@ -12,6 +12,7 @@ import 'package:technomade/src/feature/app/widgets/custom_overlay_widget.dart';
 import 'package:technomade/src/feature/auth/presentation/widgets/custom_button.dart';
 import 'package:technomade/src/feature/auth/presentation/widgets/custom_text_field.dart';
 import 'package:technomade/src/feature/main/bloc/create_route_second_cubit.dart';
+import 'package:technomade/src/feature/main/bloc/main_driver_cubit.dart';
 import 'package:technomade/src/feature/main/presentation/vmodel/create_route_vmodel.dart';
 import 'package:technomade/src/feature/main/presentation/widgets/add_stop_bottom_sheet.dart';
 import 'package:technomade/src/feature/main/presentation/widgets/stop_card.dart';
@@ -77,6 +78,7 @@ class _CreateRouteSecondPageState extends State<CreateRouteSecondPage> {
                   Future.delayed(
                     const Duration(milliseconds: 200),
                   ).whenComplete(() {
+                    BlocProvider.of<MainDriverCubit>(context).getDriversMyRoute();
                     v.clearAll();
                     context.router.maybePop();
                   });
