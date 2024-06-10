@@ -130,7 +130,7 @@ class _SearchPassengerPageState extends State<SearchPassengerPage> {
                     setState(() {});
                   },
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0).copyWith(right: 0),
                     child: Row(
                       children: [
                         Expanded(
@@ -142,7 +142,25 @@ class _SearchPassengerPageState extends State<SearchPassengerPage> {
                             ),
                           ),
                         ),
-                        SvgPicture.asset(Assets.icons.calendarBlankOutline),
+                        if (selectedDate != null)
+                          IconButton(
+                            visualDensity: const VisualDensity(horizontal: -2),
+                            constraints: const BoxConstraints(
+                              maxWidth: 24,
+                              maxHeight: 24,
+                            ),
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
+                              selectedDate = null;
+                              setState(() {});
+                            },
+                            icon: const Icon(Icons.close_rounded),
+                          )
+                        else
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: SvgPicture.asset(Assets.icons.calendarBlankOutline),
+                          ),
                       ],
                     ),
                   ),

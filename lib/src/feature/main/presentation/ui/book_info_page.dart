@@ -1,15 +1,44 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:technomade/gen/assets.gen.dart';
+import 'package:technomade/src/core/extension/integer_extension.dart';
+import 'package:technomade/src/core/router/app_router.dart';
+import 'package:technomade/src/core/services/locator_service.dart';
+import 'package:technomade/src/core/utils/snackbar_util.dart';
 import 'package:technomade/src/feature/auth/presentation/widgets/custom_button.dart';
+import 'package:technomade/src/feature/main/bloc/book_place_cubit.dart';
+import 'package:technomade/src/feature/main/model/route_station_dto.dart';
+import 'package:technomade/src/feature/main/presentation/main_presentation.dart';
 
 @RoutePage()
-class BookInfoPage extends StatefulWidget {
-  const BookInfoPage({super.key});
+class BookInfoPage extends StatefulWidget implements AutoRouteWrapper {
+  final double price;
+  final RouteDTO route;
+  final RouteStationDTO startStation;
+  final RouteStationDTO finishStation;
+  final PlaceDTO place;
+  const BookInfoPage({
+    super.key,
+    required this.price,
+    required this.route,
+    required this.startStation,
+    required this.finishStation,
+    required this.place,
+  });
 
   @override
   State<BookInfoPage> createState() => _BookInfoPageState();
+
+  @override
+  Widget wrappedRoute(BuildContext context) {
+    return BlocProvider(
+      create: (context) => BookPlaceCubit(repository: DI()),
+      child: this,
+    );
+  }
 }
 
 class _BookInfoPageState extends State<BookInfoPage> {
@@ -37,81 +66,115 @@ class _BookInfoPageState extends State<BookInfoPage> {
         titleSpacing: 8,
         centerTitle: false,
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   Text(
-                    'Almaty ----- Turkestan',
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+                    '${widget.startStation.station?.name} ----- ${widget.finishStation.station?.name}',
+                    style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 32,
                   ),
                   BookInfoRow(
                     firstTitle: 'Date & Time',
-                    firstSubtitle: '12 march, 8:30',
+                    firstSubtitle:
+                        DateFormat('dd MMMM, HH:mm').format(widget.startStation.departureTime ?? DateTime.now()),
                     secondTitle: 'Arrival',
-                    secondSubtitle: '12 march, 15:30',
+                    secondSubtitle:
+                        DateFormat('dd MMMM, HH:mm').format(widget.finishStation.arrivalTime ?? DateTime.now()),
                   ),
                   BookInfoRow(
                     firstTitle: 'Ticket',
-                    firstSubtitle: '3 seats',
+                    firstSubtitle: '1 seat',
                     secondTitle: 'Seat number',
-                    secondSubtitle: '15, 18, 27',
+                    secondSubtitle: '${widget.place.place + 1}',
                   ),
                   BookInfoRow(
                     firstTitle: 'Price',
-                    firstSubtitle: '30 000 ₸',
+                    firstSubtitle: '${widget.price.toInt().thousandFormat()} ₸',
                     secondTitle: 'Bus number',
                     secondSubtitle: '122040',
                   ),
                 ],
               ),
             ),
-            Spacer(),
-            Divider(
+            const Spacer(),
+            const Divider(
               thickness: 1,
               height: 0,
               color: Colors.black,
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Total',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    '30 000 ₸',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    '${widget.price.toInt().thousandFormat()} ₸',
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: CustomButton(
-                padding: EdgeInsets.symmetric(vertical: 8),
-                height: 36,
-                text: 'Book',
-                textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
-              ),
+            BlocConsumer<BookPlaceCubit, BookPlaceState>(
+              listener: (context, state) {
+                state.maybeWhen(
+                  loadedState: (message) {
+                    SnackBarUtil.showTopShortToast(context, message: message);
+                    context.router.popUntil((route) => route.settings.name == LauncherRoute.name);
+                  },
+                  errorState: (message) {
+                    SnackBarUtil.showErrorTopShortToast(context, message);
+                  },
+                  orElse: () {},
+                );
+              },
+              builder: (context, state) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: CustomButton(
+                    onTap: () {
+                      if (widget.route.id != null &&
+                          widget.startStation.id != null &&
+                          widget.finishStation.id != null) {
+                        BlocProvider.of<BookPlaceCubit>(context).bookPlace(
+                          routeId: widget.route.id!,
+                          start: widget.startStation.id!,
+                          finish: widget.finishStation.id!,
+                          place: widget.place.place,
+                        );
+                      }
+                    },
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    height: 36,
+                    text: 'Book',
+                    textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+                    child: state.maybeWhen(
+                      loadingState: () => const CircularProgressIndicator.adaptive(),
+                      orElse: () => null,
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),

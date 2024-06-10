@@ -1,6 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:technomade/src/feature/main/datasource/main_remote_ds.dart';
 import 'package:technomade/src/feature/main/model/payload/stops_payload.dart';
+import 'package:technomade/src/feature/main/model/place_dto.dart';
 import 'package:technomade/src/feature/main/model/route_dto.dart';
 import 'package:technomade/src/feature/main/model/station_dto.dart';
 
@@ -27,6 +28,19 @@ abstract class IMainRepository {
     required String from,
     required String to,
     String? date,
+  });
+
+  Future<Either<String, List<PlaceDTO>>> getPlaces({
+    required int routeId,
+    required int start,
+    required int finish,
+  });
+
+  Future<Either<String, String>> bookPlace({
+    required int routeId,
+    required int start,
+    required int finish,
+    required int place,
   });
 
   /// Common API
@@ -95,4 +109,17 @@ class MainRepositoryImpl implements IMainRepository {
         ticketUuid: ticketUuid,
         routeId: routeId,
       );
+
+  @override
+  Future<Either<String, List<PlaceDTO>>> getPlaces({required int routeId, required int start, required int finish}) =>
+      _remoteDS.getPlaces(routeId: routeId, start: start, finish: finish);
+
+  @override
+  Future<Either<String, String>> bookPlace({
+    required int routeId,
+    required int start,
+    required int finish,
+    required int place,
+  }) =>
+      _remoteDS.bookPlace(routeId: routeId, start: start, finish: finish, place: place);
 }

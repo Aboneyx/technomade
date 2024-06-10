@@ -5,6 +5,7 @@ import 'package:technomade/src/core/enum/environment.dart';
 import 'package:technomade/src/core/network/network_helper.dart';
 import 'package:technomade/src/core/utils/error_util.dart';
 import 'package:technomade/src/feature/main/model/payload/stops_payload.dart';
+import 'package:technomade/src/feature/main/model/place_dto.dart';
 import 'package:technomade/src/feature/main/model/route_dto.dart';
 import 'package:technomade/src/feature/main/model/station_dto.dart';
 
@@ -31,6 +32,19 @@ abstract class IMainRemoteDS {
     required String from,
     required String to,
     String? date,
+  });
+
+  Future<Either<String, List<PlaceDTO>>> getPlaces({
+    required int routeId,
+    required int start,
+    required int finish,
+  });
+
+  Future<Either<String, String>> bookPlace({
+    required int routeId,
+    required int start,
+    required int finish,
+    required int place,
   });
 
   /// Common API
@@ -290,6 +304,88 @@ class MainRemoteDSImpl with NetworkHelper implements IMainRemoteDS {
         e,
         stackTrace: stackTrace,
         hint: '${BackendEndpointCollection.DRIVER_ROUTE_CREATE} => $parseError',
+      );
+
+      return Left(parseError);
+    } on Object catch (e, stackTrace) {
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: 'Object error => $e',
+      );
+
+      return Left('Object Error: $e');
+    }
+  }
+
+  @override
+  Future<Either<String, List<PlaceDTO>>> getPlaces({
+    required int routeId,
+    required int start,
+    required int finish,
+  }) async {
+    try {
+      final dioResponse = await dio.get(
+        BackendEndpointCollection.PLACE_INFO,
+        data: {
+          'route': routeId,
+          'start': start,
+          'finish': finish,
+        },
+      );
+
+      final listReponse = dioResponse.data as List;
+
+      final List<PlaceDTO> stations = listReponse.map((e) => PlaceDTO.fromJson(e as Map<String, dynamic>)).toList();
+
+      return Right(stations);
+    } on DioException catch (e, stackTrace) {
+      final parseError = pasreDioException(e);
+
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: '${BackendEndpointCollection.PLACE_INFO} => $parseError',
+      );
+
+      return Left(parseError);
+    } on Object catch (e, stackTrace) {
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: 'Object error => $e',
+      );
+
+      return Left('Object Error: $e');
+    }
+  }
+
+  @override
+  Future<Either<String, String>> bookPlace({
+    required int routeId,
+    required int start,
+    required int finish,
+    required int place,
+  }) async {
+    try {
+      await dio.post(
+        BackendEndpointCollection.BOOK_PLACE,
+        data: {
+          'route': routeId,
+          'start': start,
+          'finish': finish,
+          'place': place,
+        },
+      );
+
+      return const Right('Booked sucsessfull!');
+    } on DioException catch (e, stackTrace) {
+      final parseError = pasreDioException(e);
+
+      ErrorUtil.logError(
+        e,
+        stackTrace: stackTrace,
+        hint: '${BackendEndpointCollection.BOOK_PLACE} => $parseError',
       );
 
       return Left(parseError);

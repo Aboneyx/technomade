@@ -9,6 +9,7 @@ class CustomButton extends StatelessWidget {
   final Function()? onTap;
   final String text;
   final EdgeInsetsGeometry? padding;
+  final Widget? child;
   const CustomButton({
     super.key,
     this.onTap,
@@ -18,6 +19,7 @@ class CustomButton extends StatelessWidget {
     this.height,
     this.textStyle,
     this.padding,
+    this.child,
   });
 
   @override
@@ -39,11 +41,12 @@ class CustomButton extends StatelessWidget {
           child: Padding(
             padding: padding ?? const EdgeInsets.symmetric(vertical: 14),
             child: Center(
-              child: Text(
-                text,
-                style: textStyle ?? const TextStyle(fontSize: 17, color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
+              child: child ??
+                  Text(
+                    text,
+                    style: textStyle ?? const TextStyle(fontSize: 17, color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
             ),
           ),
         ),
