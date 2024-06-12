@@ -28,7 +28,11 @@ class _PassangerBaseState extends State<PassengerBase> {
             centerTitle: true,
             title: const Text(
               'My Tickets',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
             ),
             backgroundColor: AppColors.ligthBlue,
           );
@@ -37,7 +41,11 @@ class _PassangerBaseState extends State<PassengerBase> {
             centerTitle: true,
             title: const Text(
               'Find ticket',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
             ),
             backgroundColor: AppColors.ligthBlue,
           );
@@ -46,7 +54,11 @@ class _PassangerBaseState extends State<PassengerBase> {
             centerTitle: true,
             title: const Text(
               'Profile',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
             ),
             backgroundColor: AppColors.ligthBlue,
           );

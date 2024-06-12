@@ -212,6 +212,7 @@ class _PassengerTicketDetailPageState extends State<PassengerTicketDetailPage> {
                                 context.router.push(
                                   MonitoringPassengerRoute(
                                     route: route,
+                                    driverRouteCubit: BlocProvider.of<DriverRouteCubit>(context),
                                   ),
                                 );
                               },

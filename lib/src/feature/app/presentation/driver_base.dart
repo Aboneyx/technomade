@@ -26,7 +26,11 @@ class _PassangerBaseState extends State<DriverBase> {
             centerTitle: true,
             title: const Text(
               'My Routes',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
             ),
             backgroundColor: AppColors.ligthBlue,
           );
@@ -35,7 +39,11 @@ class _PassangerBaseState extends State<DriverBase> {
             centerTitle: true,
             title: const Text(
               'Creating Route',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
             ),
             backgroundColor: AppColors.ligthBlue,
           );
@@ -44,7 +52,11 @@ class _PassangerBaseState extends State<DriverBase> {
             centerTitle: true,
             title: const Text(
               'Profile',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
             ),
             backgroundColor: AppColors.ligthBlue,
           );

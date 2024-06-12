@@ -78,19 +78,23 @@ class _ProfilePageState extends State<ProfilePage> {
                   orElse: () => const SizedBox(),
                 ),
                 const Spacer(),
-                TextButton(
-                  onPressed: () {
-                    BlocProvider.of<AppBloc>(context).add(const AppEvent.logout());
-                  },
-                  child: const Text(
-                    'Log out',
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.w500,
+                SizedBox(
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: () {
+                      BlocProvider.of<AppBloc>(context).add(const AppEvent.logout());
+                    },
+                    child: const Text(
+                      'Log out',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),
-                const Spacer(),
+                const SizedBox(height: 20),
               ],
             ),
           ),

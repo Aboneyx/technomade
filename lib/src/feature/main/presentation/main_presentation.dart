@@ -1,3 +1,4 @@
+export '../bloc/driver_route_cubit.dart';
 export '../model/place_dto.dart';
 export '../model/route_dto.dart';
 export '../model/ticket_dto.dart';
