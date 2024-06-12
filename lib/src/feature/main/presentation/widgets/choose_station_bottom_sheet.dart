@@ -6,6 +6,7 @@ import 'package:technomade/src/core/resources/resources.dart';
 import 'package:technomade/src/core/services/locator_service.dart';
 import 'package:technomade/src/core/utils/snackbar_util.dart';
 import 'package:technomade/src/feature/app/widgets/custom_loading_widget.dart';
+import 'package:technomade/src/feature/app/widgets/field_debouncer.dart';
 import 'package:technomade/src/feature/main/bloc/station_list_cubit.dart';
 import 'package:technomade/src/feature/main/model/station_dto.dart';
 
@@ -62,6 +63,7 @@ class _FromBottomSheetState extends State<FromBottomSheet> {
     // print(initialChildSize);
   }
 
+  final FieldDebouncer debouncer = FieldDebouncer(milliseconds: 500);
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<StationListCubit, StationListState>(
@@ -116,6 +118,11 @@ class _FromBottomSheetState extends State<FromBottomSheet> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: CupertinoTextField(
+                    onChanged: (value) {
+                      debouncer.run(() {
+                        BlocProvider.of<StationListCubit>(context).searchStation(value);
+                      });
+                    },
                     placeholder: 'City or station',
                     prefix: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10).copyWith(right: 0),

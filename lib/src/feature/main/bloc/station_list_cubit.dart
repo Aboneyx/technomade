@@ -29,6 +29,14 @@ class StationListCubit extends Cubit<StationListState> {
       },
     );
   }
+
+  void searchStation(String search) {
+    emit(StationListState.loadedState(stations: _searchedStationList(search)));
+  }
+
+  List<StationDTO> _searchedStationList(String search) {
+    return _stations.where((element) => (element.name ?? '').toLowerCase().contains(search.toLowerCase())).toList();
+  }
 }
 
 @freezed
