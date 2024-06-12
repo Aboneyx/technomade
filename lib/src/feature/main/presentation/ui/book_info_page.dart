@@ -10,12 +10,13 @@ import 'package:technomade/src/core/services/locator_service.dart';
 import 'package:technomade/src/core/utils/snackbar_util.dart';
 import 'package:technomade/src/feature/auth/presentation/widgets/custom_button.dart';
 import 'package:technomade/src/feature/main/bloc/book_place_cubit.dart';
+import 'package:technomade/src/feature/main/bloc/tickets_cubit.dart';
 import 'package:technomade/src/feature/main/model/route_station_dto.dart';
 import 'package:technomade/src/feature/main/presentation/main_presentation.dart';
 
 @RoutePage()
 class BookInfoPage extends StatefulWidget implements AutoRouteWrapper {
-  final double price;
+  final num price;
   final RouteDTO route;
   final RouteStationDTO startStation;
   final RouteStationDTO finishStation;
@@ -140,6 +141,7 @@ class _BookInfoPageState extends State<BookInfoPage> {
                 state.maybeWhen(
                   loadedState: (message) {
                     SnackBarUtil.showTopShortToast(context, message: message);
+                    BlocProvider.of<TicketsCubit>(context).getTickets();
                     context.router.popUntil((route) => route.settings.name == LauncherRoute.name);
                   },
                   errorState: (message) {

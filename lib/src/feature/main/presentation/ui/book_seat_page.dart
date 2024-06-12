@@ -15,7 +15,7 @@ import 'package:technomade/src/feature/main/presentation/main_presentation.dart'
 
 @RoutePage()
 class BookSeatPage extends StatefulWidget implements AutoRouteWrapper {
-  final double price;
+  final num price;
   final RouteDTO route;
   final RouteStationDTO startStation;
   final RouteStationDTO finishStation;

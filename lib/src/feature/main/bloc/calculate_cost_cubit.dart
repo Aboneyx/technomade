@@ -42,7 +42,7 @@ class CalculateCostState with _$CalculateCostState {
   const factory CalculateCostState.loadingState() = _LoadingState;
 
   const factory CalculateCostState.loadedState({
-    required double cost,
+    required num? cost,
   }) = _LoadedState;
 
   const factory CalculateCostState.errorState({

@@ -15,7 +15,7 @@ class MainRouteCard extends StatefulWidget {
   final RouteDTO? route;
   final RouteStationDTO? fromStation;
   final RouteStationDTO? toStation;
-  final double? ticketCost;
+  final num? ticketCost;
   const MainRouteCard({
     super.key,
     this.isPassenger = false,

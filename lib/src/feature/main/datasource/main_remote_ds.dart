@@ -61,7 +61,7 @@ abstract class IMainRemoteDS {
   /// Common API
   Future<Either<String, List<StationDTO>>> getStationList();
 
-  Future<Either<String, double>> calculateCost({
+  Future<Either<String, num?>> calculateCost({
     required int routeId,
     required String startStop,
     required String finishStop,
@@ -218,7 +218,7 @@ class MainRemoteDSImpl with NetworkHelper implements IMainRemoteDS {
   }
 
   @override
-  Future<Either<String, double>> calculateCost({
+  Future<Either<String, num?>> calculateCost({
     required int routeId,
     required String startStop,
     required String finishStop,
@@ -233,7 +233,7 @@ class MainRemoteDSImpl with NetworkHelper implements IMainRemoteDS {
         },
       );
 
-      final mapResponse = dioResponse.data as double;
+      final mapResponse = dioResponse.data as num?;
 
       return Right(mapResponse);
     } on DioException catch (e, stackTrace) {

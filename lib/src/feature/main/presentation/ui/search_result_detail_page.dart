@@ -218,7 +218,7 @@ class _SearchResultDetailPageState extends State<SearchResultDetailPage> {
                           ),
                           Text(
                             state.maybeWhen(
-                              loadedState: (cost) => '${cost.toInt().thousandFormat()} ₸',
+                              loadedState: (cost) => '${cost.thousandFormat()} ₸',
                               orElse: () => ' - ',
                             ),
                             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
@@ -241,7 +241,7 @@ class _SearchResultDetailPageState extends State<SearchResultDetailPage> {
                                   loadedState: (cost) {
                                     context.router.push(
                                       BookSeatRoute(
-                                        price: cost,
+                                        price: cost ?? 0,
                                         route: widget.route,
                                         startStation: startStation!,
                                         finishStation: finishStation!,

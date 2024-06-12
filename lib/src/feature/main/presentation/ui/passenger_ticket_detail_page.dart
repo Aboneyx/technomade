@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:technomade/gen/assets.gen.dart';
 import 'package:technomade/src/core/resources/resources.dart';
 import 'package:technomade/src/core/router/app_router.dart';
@@ -39,6 +40,9 @@ class PassengerTicketDetailPage extends StatefulWidget implements AutoRouteWrapp
 }
 
 class _PassengerTicketDetailPageState extends State<PassengerTicketDetailPage> {
+  final RefreshController refreshController = RefreshController();
+  final ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
     if (widget.ticket.forRoute != null && widget.ticket.forRoute!.id != null) {
@@ -93,80 +97,97 @@ class _PassengerTicketDetailPageState extends State<PassengerTicketDetailPage> {
               children: [
                 Expanded(
                   child: state.maybeWhen(
-                    loadedState: (route) => ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      children: [
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        PersonInfoWidget(
-                          driver: route.driver,
-                        ),
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        const Text(
-                          'Type',
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: AppColors.mainColor),
+                    loadedState: (route) => SmartRefresher(
+                      controller: refreshController,
+                      scrollController: scrollController,
+                      onRefresh: () {
+                        if (widget.ticket.forRoute != null && widget.ticket.forRoute!.id != null) {
+                          BlocProvider.of<DriverRouteCubit>(context)
+                              .getDriverRouteById(routeId: widget.ticket.forRoute!.id!);
+                          BlocProvider.of<CalculateCostCubit>(context).calculateCost(
+                            routeId: widget.ticket.forRoute!.id!,
+                            startStop: widget.ticket.fromStop?.station?.name ?? '',
+                            finishStop: widget.ticket.toStop?.station?.name ?? '',
+                          );
+                        }
+
+                        refreshController.refreshCompleted();
+                      },
+                      child: ListView(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        children: [
+                          const SizedBox(
+                            height: 24,
                           ),
-                          child: const Text('First floor bus'),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: AppColors.mainColor),
+                          PersonInfoWidget(
+                            driver: route.driver,
                           ),
-                          child: Text('${route.description}'),
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        const Text(
-                          'Full rourte',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        BlocConsumer<CalculateCostCubit, CalculateCostState>(
-                          listener: (context, stateCost) {
-                            stateCost.maybeWhen(
-                              errorState: (message) {
-                                SnackBarUtil.showErrorTopShortToast(context, message);
-                              },
-                              orElse: () {},
-                            );
-                          },
-                          builder: (context, stateCost) {
-                            return MainRouteCard(
-                              route: route,
-                              fromStation: widget.ticket.fromStop,
-                              toStation: widget.ticket.toStop,
-                              ticketCost: stateCost.whenOrNull(
-                                loadedState: (cost) => cost,
-                              ),
-                            );
-                          },
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                      ],
+                          const SizedBox(
+                            height: 24,
+                          ),
+                          const Text(
+                            'Type',
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: AppColors.mainColor),
+                            ),
+                            child: const Text('First floor bus'),
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: AppColors.mainColor),
+                            ),
+                            child: Text('${route.description}'),
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          const Text(
+                            'Full route',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          BlocConsumer<CalculateCostCubit, CalculateCostState>(
+                            listener: (context, stateCost) {
+                              stateCost.maybeWhen(
+                                errorState: (message) {
+                                  SnackBarUtil.showErrorTopShortToast(context, message);
+                                },
+                                orElse: () {},
+                              );
+                            },
+                            builder: (context, stateCost) {
+                              return MainRouteCard(
+                                route: route,
+                                fromStation: widget.ticket.fromStop,
+                                toStation: widget.ticket.toStop,
+                                ticketCost: stateCost.whenOrNull(
+                                  loadedState: (cost) => cost,
+                                ),
+                              );
+                            },
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                        ],
+                      ),
                     ),
                     orElse: () => const Center(
                       child: CircularProgressIndicator.adaptive(),
@@ -205,7 +226,7 @@ class _PassengerTicketDetailPageState extends State<PassengerTicketDetailPage> {
                         child: CustomButton(
                           height: 40,
                           padding: const EdgeInsets.symmetric(vertical: 8),
-                          text: 'Show qr',
+                          text: 'Show QR',
                           textStyle: const TextStyle(fontWeight: FontWeight.w600, color: Colors.white),
                           onTap: () {
                             context.router.push(ShowQrRoute(ticket: widget.ticket));

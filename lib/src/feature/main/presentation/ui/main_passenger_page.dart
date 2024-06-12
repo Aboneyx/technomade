@@ -3,31 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:technomade/src/core/router/app_router.dart';
-import 'package:technomade/src/core/services/locator_service.dart';
 import 'package:technomade/src/core/utils/snackbar_util.dart';
 import 'package:technomade/src/feature/main/bloc/tickets_cubit.dart';
 import 'package:technomade/src/feature/main/presentation/main_presentation.dart';
 import 'package:technomade/src/feature/main/presentation/widgets/main_route_card.dart';
 
 @RoutePage()
-class MainPassengerPage extends StatefulWidget implements AutoRouteWrapper {
+class MainPassengerPage extends StatefulWidget  {
   const MainPassengerPage({super.key});
 
   @override
   State<MainPassengerPage> createState() => _MainPassengerPageState();
 
-  @override
-  Widget wrappedRoute(BuildContext context) {
-    return BlocProvider(
-      create: (context) => TicketsCubit(repository: DI()),
-      child: this,
-    );
-  }
+
 }
 
 class _MainPassengerPageState extends State<MainPassengerPage> {
   final RefreshController refreshController = RefreshController();
   final ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
     BlocProvider.of<TicketsCubit>(context).getTickets();

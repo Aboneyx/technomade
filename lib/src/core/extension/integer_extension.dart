@@ -1,5 +1,16 @@
 import 'package:intl/intl.dart';
 
+extension NumExtension on num? {
+  String thousandFormat() {
+    if (this == null) {
+      return '';
+    }
+    final priceFormatter = NumberFormat();
+
+    return priceFormatter.format(this).replaceAll(',', ' ');
+  }
+}
+
 extension IntegerExtension on int? {
   String priceFormat() {
     if (this == null) {

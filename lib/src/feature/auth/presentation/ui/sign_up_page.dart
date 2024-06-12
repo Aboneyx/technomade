@@ -132,7 +132,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             SwitchListTile(
                               value: isDriver,
                               title: Text(
-                                isDriver ? "I am a driver" : "I'm a passenger",
+                                isDriver ? "I'm a driver" : "I'm a passenger",
                               ),
                               onChanged: (value) {
                                 setState(() {
