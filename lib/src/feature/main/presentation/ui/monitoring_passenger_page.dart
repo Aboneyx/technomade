@@ -61,14 +61,19 @@ class _MonitoringPassengerPageState extends State<MonitoringPassengerPage> {
       body: SafeArea(
         child: ListView(
           children: [
-            const SizedBox(
-              height: 16,
-            ),
-            if ((widget.route.routeStations ?? []).firstWhereOrNull((element) => element.state == 'PASSED') != null)
+            const SizedBox(height: 16),
+            if (widget.route.routeState == 'NON_ACTIVE')
+              const Center(
+                child: Text(
+                  'The route has been completed',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                ),
+              )
+            else if ((widget.route.routeStations ?? []).lastWhereOrNull((element) => element.state == 'PASSED') != null)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
-                  "Now we've passed ${(widget.route.routeStations ?? []).firstWhereOrNull((element) => element.state == 'PASSED')?.station?.name}, we're going to the next station.",
+                  "Now we've passed ${(widget.route.routeStations ?? []).lastWhereOrNull((element) => element.state == 'PASSED')?.station?.name}, we're going to the next station.",
                   style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                 ),
               ),
