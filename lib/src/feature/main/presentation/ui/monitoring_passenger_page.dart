@@ -93,7 +93,8 @@ class _MonitoringPassengerPageState extends State<MonitoringPassengerPage> {
                   builder: TimelineTileBuilder.connected(
                     connectionDirection: ConnectionDirection.before,
                     indicatorBuilder: (_, index) {
-                      if (index == getCurrentStationIndex(widget.route.routeStations!)) {
+                      final routeStation = widget.route.routeStations![index];
+                      if (routeStation.state == 'STAY' || routeStation.state == 'stay') {
                         return DotIndicator(
                           color: AppColors.mainColor,
                           child: Padding(
@@ -101,13 +102,39 @@ class _MonitoringPassengerPageState extends State<MonitoringPassengerPage> {
                             child: SvgPicture.asset(Assets.icons.icBus),
                           ),
                         );
+                      } else if (routeStation.state == 'PASSED' || routeStation.state == 'PASSED') {
+                        return const DotIndicator(
+                          color: AppColors.mainColor,
+                        );
                       } else {
                         return const DotIndicator();
                       }
+                      // if (index == getCurrentStationIndex(widget.route.routeStations!)) {
+                      //   return DotIndicator(
+                      //     color: AppColors.mainColor,
+                      //     child: Padding(
+                      //       padding: const EdgeInsets.all(4.0),
+                      //       child: SvgPicture.asset(Assets.icons.icBus),
+                      //     ),
+                      //   );
+                      // } else {
+                      //   return const DotIndicator();
+                      // }
                     },
-                    connectorBuilder: (_, index, ___) => SolidLineConnector(
-                      color: index == 0 ? const Color(0xff66c97f) : null,
-                    ),
+                    connectorBuilder: (_, index, ___) {
+                      final routeStation = widget.route.routeStations![index];
+
+                      final color = routeStation.state == 'PASSED' ||
+                              routeStation.state == 'PASSED' ||
+                              routeStation.state == 'STAY' ||
+                              routeStation.state == 'stay'
+                          ? AppColors.mainColor
+                          : null;
+
+                      return SolidLineConnector(
+                        color: color,
+                      );
+                    },
                     contentsBuilder: (context, index) => Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8).copyWith(right: 0),
                       child: BookStopCard(
