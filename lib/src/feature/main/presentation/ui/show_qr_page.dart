@@ -49,7 +49,7 @@ class _ShowQrPageState extends State<ShowQrPage> {
                 height: 32,
               ),
               QrImageView(
-                data: '${widget.ticket.id}',
+                data: '${widget.ticket.uuid}',
                 size: 250.0,
               ),
               const SizedBox(
